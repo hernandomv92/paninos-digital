@@ -1,0 +1,116 @@
+{
+  "variablePrice": {
+    "isVariablePrice": false
+  },
+  "config": {
+    "openModalNotes": true
+  },
+  "deletedInfo": {
+    "isDeleted": false
+  },
+  "configCombo": {
+    "options": [
+      {
+        "selectionType": "All",
+        "name": "Opción",
+        "products": [],
+        "_id": "678729511b0e7e0ac7800787"
+      }
+    ],
+    "showInReports": false
+  },
+  "externalIntegration": {
+    "rappi": {
+      "stores": []
+    }
+  },
+  "_id": "678729511b0e7e0ac7800785",
+  "category": {
+    "externalIntegration": {
+      "domiPirPos": {
+        "isActive": false
+      }
+    },
+    "menu": {
+      "source": "General"
+    },
+    "_id": "678720d8e8f60393f70ae492",
+    "name": "Adiciones Paninos",
+    "description": "",
+    "isActive": true,
+    "deleted": false,
+    "modifiedOn": "2025-01-15T02:43:36.758Z",
+    "createdOn": "2025-01-15T02:43:36.755Z",
+    "business": "6769a9bc3feeb8457a7f50e4",
+    "__v": 0
+  },
+  "name": "Add Jamón",
+  "description": "",
+  "price": 0,
+  "ingredients": [],
+  "extra": [],
+  "subProducts": [],
+  "pricePurchase": 0,
+  "stock": 0,
+  "stockMinimum": 0,
+  "locationsStock": [
+    {
+      "config": {
+        "order": {
+          "allTablesAccess": true,
+          "tablesAccess": []
+        },
+        "bookOfPrices": null,
+        "externalIntegration": {
+          "domiPirPos": {
+            "isActive": false
+          }
+        }
+      },
+      "locationStock": {
+        "_id": "6769a9bc3feeb8457a7f50f0",
+        "business": {
+          "_id": "6769a9bc3feeb8457a7f50e4",
+          "name": "Paninos Caldas"
+        },
+        "name": "General",
+        "isMain": true,
+        "deleted": false,
+        "modifiedOn": "2024-12-23T18:19:40.979Z",
+        "createdOn": "2024-12-23T18:19:40.965Z",
+        "__v": 0
+      },
+      "stock": 0,
+      "stockMinimum": 0,
+      "isMain": false,
+      "pricePurchase": 0,
+      "avgCost": 0,
+      "price": 1500,
+      "tax": null,
+      "taxes": [],
+      "promo": null,
+      "waiterOrderArea": null,
+      "_id": "678729511b0e7e0ac7800786"
+    }
+  ],
+  "weekdays": [],
+  "notes": [],
+  "barcode": "610",
+  "isIngredient": false,
+  "isActive": true,
+  "isSubproduct": false,
+  "discountInventory": false,
+  "withoutIngredients": false,
+  "deleted": false,
+  "type": "Normal",
+  "extraV2": [],
+  "accompanying": [],
+  "modifiedOn": "2025-01-31T19:41:50.107Z",
+  "createdOn": "2025-01-15T03:19:45.069Z",
+  "business": "6769a9bc3feeb8457a7f50e4",
+  "__v": 4,
+  "tax": null,
+  "inventoryType": "WithIngredients",
+  "promo": null,
+  "totalCost": null
+}
