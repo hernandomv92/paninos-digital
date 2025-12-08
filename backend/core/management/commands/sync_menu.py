@@ -8,53 +8,68 @@ class Command(BaseCommand):
 
     def extract_stock(self, prod_data):
         """
-        Extract stock from various possible fields in Loggro API response.
-        Handles: currentStock, stock, inventory, locationsStock array
-        Converts string/float to integer.
+        Extract stock from Loggro API response with proper priority handling.
         
-        Special handling for inventoryType="WithIngredients":
-        - These products calculate stock from ingredients
-        - If isActive=true, we assume unlimited stock (999)
+        PRIORITY ORDER:
+        1. locationsStock[].stock - Most accurate, used by Mixed/WithIngredients types
+        2. Direct stock field - Fallback for simple inventory
+        3. isActive status - Last resort for ingredient-based products
+        
+        INVENTORY TYPES:
+        - "WithIngredients": Stock calculated from ingredients, use isActive
+        - "Mixed": Stock stored in locationsStock array (MOST COMMON)
+        - "Normal": Direct stock field
+        
+        Returns: Integer stock value (0 if unavailable, 999 if unlimited)
         """
-        # Check inventory type
         inventory_type = prod_data.get('inventoryType', '')
         is_active = prod_data.get('isActive', True)
         
-        # For products with ingredient-based inventory, use isActive status
+        # PRIORITY 1: Check locationsStock array FIRST (most reliable)
+        # This is where Loggro stores the actual stock for Mixed/WithIngredients products
+        if 'locationsStock' in prod_data and isinstance(prod_data['locationsStock'], list):
+            for loc in prod_data['locationsStock']:
+                # Try multiple field names in order of preference
+                for field in ['stock', 'currentStock', 'quantity']:
+                    if field in loc:
+                        try:
+                            stock_value = loc[field]
+                            # Accept any non-negative value (including 0)
+                            if stock_value is not None and isinstance(stock_value, (int, float, str)):
+                                stock_int = int(float(stock_value))
+                                # For Mixed/WithIngredients, trust the locationsStock value
+                                if inventory_type in ['Mixed', 'WithIngredients']:
+                                    return stock_int
+                                # For other types, only return if > 0
+                                elif stock_int > 0:
+                                    return stock_int
+                        except (ValueError, TypeError):
+                            continue
+        
+        # PRIORITY 2: Try direct stock fields (fallback for Normal inventory)
+        for field in ['stock', 'currentStock', 'inventory']:
+            if field in prod_data:
+                try:
+                    stock_value = prod_data[field]
+                    if stock_value is not None and stock_value > 0:
+                        return int(float(stock_value))
+                except (ValueError, TypeError):
+                    continue
+        
+        # PRIORITY 3: Special handling for WithIngredients type
+        # These products calculate stock dynamically from ingredients
         if inventory_type == 'WithIngredients':
             if is_active:
                 return 999  # Unlimited/Available
             else:
                 return 0  # Not available
         
-        # Try direct fields first
-        for field in ['currentStock', 'stock', 'inventory']:
-            if field in prod_data:
-                try:
-                    stock_value = prod_data[field]
-                    if stock_value is not None and stock_value > 0:
-                        # Convert string/float to int
-                        return int(float(stock_value))
-                except (ValueError, TypeError):
-                    continue
-        
-        # Try locationsStock array
-        if 'locationsStock' in prod_data and isinstance(prod_data['locationsStock'], list):
-            for loc in prod_data['locationsStock']:
-                for field in ['currentStock', 'stock', 'quantity']:
-                    if field in loc:
-                        try:
-                            stock_value = loc[field]
-                            if stock_value is not None and stock_value > 0:
-                                return int(float(stock_value))
-                        except (ValueError, TypeError):
-                            continue
-        
-        # If no stock found but product is active, assume available
+        # PRIORITY 4: If product is active but no stock found, assume available
+        # This handles edge cases where stock tracking is disabled
         if is_active:
             return 999  # Unlimited/Available
         
-        # Default to 0 if no stock found and not active
+        # Default: Product is inactive or no stock data
         return 0
 
     def handle(self, *args, **options):

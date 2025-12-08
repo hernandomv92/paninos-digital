@@ -1,0 +1,40 @@
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Virtual environments
+.venv
+venv/
+env/
+ENV/
+
+# Git
+.git
+.gitignore
+
+# SQLite database (not used in production)
+db.sqlite3
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Logs
+*.log

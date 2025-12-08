@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_DEBUG=True
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+      - DATABASE_URL=${DATABASE_URL}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-django-insecure-dev-key-change-in-production}
+    volumes:
+      # Mount code for development (comment out for production)
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    # For production, use the default CMD from Dockerfile (gunicorn)
+    # command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
