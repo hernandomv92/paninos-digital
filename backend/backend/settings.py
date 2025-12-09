@@ -92,16 +92,48 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Database configuration
-# Reads from DATABASE_URL environment variable (Supabase PostgreSQL connection string)
-# Falls back to SQLite for local development if DATABASE_URL is not set
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}',
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
-}
+# Database configuration for Supabase with Transaction Pooler (IPv4 compatible)
+# CRITICAL: Easypanel VPS only supports IPv4, so we MUST use port 6543 (Transaction Pooler)
+# Direct connection on port 5432 is IPv6-only and will fail with "Network is unreachable"
+
+DATABASE_URL = os.environ.get('DATABASE_URL', '')
+
+if DATABASE_URL:
+    # Parse the DATABASE_URL
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+    
+    # FORCE disable server-side cursors (required for Supabase Transaction Pooler)
+    DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
+    
+    # Add connection options for Transaction Pooler compatibility
+    if 'OPTIONS' not in DATABASES['default']:
+        DATABASES['default']['OPTIONS'] = {}
+    
+    # Ensure we're using the correct port (6543 for Transaction Pooler)
+    # This is a safety check - if somehow the port is 5432, override it
+    if DATABASES['default'].get('PORT') == 5432 or DATABASES['default'].get('PORT') == '5432':
+        DATABASES['default']['PORT'] = 6543
+        print("WARNING: Overriding port 5432 to 6543 (Transaction Pooler)")
+    
+    # Add statement timeout for pooler
+    DATABASES['default']['OPTIONS']['options'] = '-c statement_timeout=60s'
+    
+    # Debug output (remove in production if needed)
+    print(f"Database Config - Host: {DATABASES['default'].get('HOST')}, Port: {DATABASES['default'].get('PORT')}")
+else:
+    # Fallback to SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
