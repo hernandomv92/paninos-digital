@@ -14,7 +14,16 @@ export default function Menu() {
             try {
                 setLoading(true);
                 const response = await api.get('menu/');
-                setCategories(response.data);
+
+                // Filter products to only show Sandwiches (starting with "SAND")
+                const filteredData = response.data.map(category => ({
+                    ...category,
+                    products: category.products.filter(product =>
+                        product.name.toUpperCase().startsWith('SAND')
+                    )
+                })).filter(category => category.products.length > 0);
+
+                setCategories(filteredData);
                 setError(null);
             } catch (err) {
                 console.error('Error fetching menu:', err);
