@@ -3,6 +3,41 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 
+// Image Mapping Configuration
+// Maps normalized uppercase product names to their specific filenames in public/images/products
+const PRODUCT_IMAGES = {
+    'SAND ALOHA': 'SAND ALOHA.JPG',
+    'SAND ATUN': 'SAND ATUN.jpg',
+    'SAND HAWAIANO': 'SAND HAWAIANO.JPG',
+    'SAND MIXTO': 'SAND MIXTO.JPG',
+    'SAND POLLO PIÑA': 'SAND POLLO PIÑA.JPG',
+    'SAND POLLO': 'SAND POLLO.JPG',
+    'SAND ROPA VIEJA': 'SAND ROPA VIEJA.JPG',
+    'SAND SALAMI PEPPERONI': 'SAND SALAMI PEPPERONI.JPG',
+    'SAND SUPREMO CARNE': 'SAND SUPREMO CARNE.jpg',
+    'SAND SUPREMO POLLO': 'SAND SUPREMO POLLO.JPG',
+    'SAND VEGETARIANO': 'SAND VEGETARIANO.jpg'
+};
+
+const getProductImage = (product) => {
+    if (!product || !product.name) return null;
+
+    const normalizedName = product.name.toUpperCase().trim();
+
+    // 1. Try manual local mapping
+    if (PRODUCT_IMAGES[normalizedName]) {
+        return `/images/products/${PRODUCT_IMAGES[normalizedName]}`;
+    }
+
+    // 2. Try backend image
+    if (product.image_url) {
+        return product.image_url;
+    }
+
+    // 3. No image found
+    return null;
+};
+
 export default function Menu() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -122,101 +157,104 @@ export default function Menu() {
 
                                 {/* Products Grid */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                                    {category.products.map((product) => (
-                                        <div
-                                            key={product.id}
-                                            className="bg-paninos-card rounded-2xl overflow-hidden border border-white/5 hover:border-paninos-yellow/50 transition-all duration-300 group shadow-lg hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col h-full"
-                                        >
-                                            {/* Product Image */}
-                                            <div className="relative w-full h-56 bg-gray-900 overflow-hidden shrink-0">
-                                                {product.image_url ? (
-                                                    <div className="relative w-full h-full overflow-hidden">
-                                                        <img
-                                                            src={product.image_url}
-                                                            alt={product.name}
-                                                            className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out grayscale-[20%] group-hover:grayscale-0"
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-paninos-card via-transparent to-transparent opacity-60"></div>
-                                                    </div>
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center bg-white/5 pattern-grid-lg">
-                                                        <svg
-                                                            className="w-16 h-16 text-white/10"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth={1}
-                                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    {category.products.map((product) => {
+                                        const imageUrl = getProductImage(product);
+                                        return (
+                                            <div
+                                                key={product.id}
+                                                className="bg-paninos-card rounded-2xl overflow-hidden border border-white/5 hover:border-paninos-yellow/50 transition-all duration-300 group shadow-lg hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col h-full"
+                                            >
+                                                {/* Product Image */}
+                                                <div className="relative w-full h-56 bg-gray-900 overflow-hidden shrink-0">
+                                                    {imageUrl ? (
+                                                        <div className="relative w-full h-full overflow-hidden">
+                                                            <img
+                                                                src={imageUrl}
+                                                                alt={product.name}
+                                                                className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out grayscale-[20%] group-hover:grayscale-0"
                                                             />
-                                                        </svg>
-                                                    </div>
-                                                )}
-
-                                                {/* Stock Badge */}
-                                                <div className="absolute top-4 right-4 z-20">
-                                                    {product.is_available && product.stock > 0 ? (
-                                                        <div className="bg-paninos-dark/90 backdrop-blur-md text-paninos-yellow border border-paninos-yellow/40 text-[10px] font-bold px-3 py-1.5 rounded-full tracking-widest uppercase shadow-xl">
-                                                            {product.stock} Disp.
+                                                            <div className="absolute inset-0 bg-gradient-to-t from-paninos-card via-transparent to-transparent opacity-60"></div>
                                                         </div>
                                                     ) : (
-                                                        <div className="bg-red-600/90 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-xl backdrop-blur-sm border border-red-500/50">
-                                                            Agotado
+                                                        <div className="w-full h-full flex items-center justify-center bg-white/5 pattern-grid-lg">
+                                                            <svg
+                                                                className="w-16 h-16 text-white/10"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                viewBox="0 0 24 24"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={1}
+                                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                                                />
+                                                            </svg>
                                                         </div>
                                                     )}
-                                                </div>
-                                            </div>
 
-                                            {/* Product Info */}
-                                            <div className="p-6 flex flex-col flex-grow relative">
-                                                <div className="absolute top-0 left-6 w-12 h-1 bg-paninos-yellow opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                                                <div className="mb-auto">
-                                                    <h3 className="text-2xl font-display font-bold text-white uppercase leading-none tracking-wide group-hover:text-paninos-yellow transition-colors mb-3">
-                                                        {product.name}
-                                                    </h3>
-
-                                                    {product.description && (
-                                                        <p className="text-sm text-gray-400 line-clamp-3 font-light leading-relaxed tracking-wide">
-                                                            {product.description}
-                                                        </p>
-                                                    )}
-                                                </div>
-
-                                                {/* Price and Add Button */}
-                                                <div className="flex items-end justify-between mt-6 pt-6 border-t border-white/5 relative">
-                                                    <div className="flex flex-col">
-                                                        {product.original_price && parseFloat(product.original_price) > parseFloat(product.price) && (
-                                                            <span className="text-xs text-gray-500 line-through font-mono mb-1">
-                                                                ${parseFloat(product.original_price).toLocaleString('es-CO')}
-                                                            </span>
+                                                    {/* Stock Badge */}
+                                                    <div className="absolute top-4 right-4 z-20">
+                                                        {product.is_available && product.stock > 0 ? (
+                                                            <div className="bg-paninos-dark/90 backdrop-blur-md text-paninos-yellow border border-paninos-yellow/40 text-[10px] font-bold px-3 py-1.5 rounded-full tracking-widest uppercase shadow-xl">
+                                                                {product.stock} Disp.
+                                                            </div>
+                                                        ) : (
+                                                            <div className="bg-red-600/90 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-xl backdrop-blur-sm border border-red-500/50">
+                                                                Agotado
+                                                            </div>
                                                         )}
-                                                        <span className="text-3xl font-display font-bold text-paninos-yellow tracking-tight leading-none">
-                                                            ${parseFloat(product.price).toLocaleString('es-CO')}
-                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Product Info */}
+                                                <div className="p-6 flex flex-col flex-grow relative">
+                                                    <div className="absolute top-0 left-6 w-12 h-1 bg-paninos-yellow opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                                                    <div className="mb-auto">
+                                                        <h3 className="text-2xl font-display font-bold text-white uppercase leading-none tracking-wide group-hover:text-paninos-yellow transition-colors mb-3">
+                                                            {product.name}
+                                                        </h3>
+
+                                                        {product.description && (
+                                                            <p className="text-sm text-gray-400 line-clamp-3 font-light leading-relaxed tracking-wide">
+                                                                {product.description}
+                                                            </p>
+                                                        )}
                                                     </div>
 
-                                                    <button
-                                                        onClick={() => handleAddToCart(product)}
-                                                        disabled={!product.is_available}
-                                                        className={`
+                                                    {/* Price and Add Button */}
+                                                    <div className="flex items-end justify-between mt-6 pt-6 border-t border-white/5 relative">
+                                                        <div className="flex flex-col">
+                                                            {product.original_price && parseFloat(product.original_price) > parseFloat(product.price) && (
+                                                                <span className="text-xs text-gray-500 line-through font-mono mb-1">
+                                                                    ${parseFloat(product.original_price).toLocaleString('es-CO')}
+                                                                </span>
+                                                            )}
+                                                            <span className="text-3xl font-display font-bold text-paninos-yellow tracking-tight leading-none">
+                                                                ${parseFloat(product.price).toLocaleString('es-CO')}
+                                                            </span>
+                                                        </div>
+
+                                                        <button
+                                                            onClick={() => handleAddToCart(product)}
+                                                            disabled={!product.is_available}
+                                                            className={`
                                                             w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl
                                                             transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.3)]
                                                             ${product.is_available
-                                                                ? 'bg-paninos-yellow text-paninos-dark hover:bg-white hover:scale-110 active:scale-95 hover:shadow-[0_0_20px_rgba(255,196,0,0.5)]'
-                                                                : 'bg-white/5 text-white/20 cursor-not-allowed border border-white/5'
-                                                            }
+                                                                    ? 'bg-paninos-yellow text-paninos-dark hover:bg-white hover:scale-110 active:scale-95 hover:shadow-[0_0_20px_rgba(255,196,0,0.5)]'
+                                                                    : 'bg-white/5 text-white/20 cursor-not-allowed border border-white/5'
+                                                                }
                                                         `}
-                                                    >
-                                                        <span className="pb-1">+</span>
-                                                    </button>
+                                                        >
+                                                            <span className="pb-1">+</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </section>
                         ))}
