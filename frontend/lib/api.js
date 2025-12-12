@@ -1,9 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // Hardcoded backend URL for Easypanel deployment
-    // TODO: Move back to environment variable once build process is fixed
-    baseURL: 'https://paninos-paninos-backend.ufiah8.easypanel.host/api',
+    // Use environment variable if available, otherwise fallback to the new custom domain
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://api.paninos.co/api',
     headers: {
         'Content-Type': 'application/json',
     },

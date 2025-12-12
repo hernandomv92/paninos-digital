@@ -40,6 +40,10 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 # Example: DJANGO_ALLOWED_HOSTS="localhost,127.0.0.1,.railway.app,.vercel.app"
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# CSRF Trusted Origins (required for Django 4.0+ cross-origin requests)
+# Example: CSRF_TRUSTED_ORIGINS="https://paninos.co,https://www.paninos.co"
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:3000').split(',')
+
 
 # Application definition
 
