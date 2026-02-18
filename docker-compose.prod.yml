@@ -17,7 +17,6 @@ services:
     environment:
       - DJANGO_ALLOWED_HOSTS=*
     networks:
-      - paninos_net
       - easypanel
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health/ || exit 1" ]
@@ -52,7 +51,6 @@ services:
       backend:
         condition: service_healthy
     networks:
-      - paninos_net
       - easypanel
     labels:
       - "traefik.enable=true"
@@ -65,7 +63,5 @@ services:
       - "traefik.http.services.paninos-web.loadbalancer.server.port=3000"
 
 networks:
-  paninos_net:
-    driver: bridge
   easypanel:
     external: true
