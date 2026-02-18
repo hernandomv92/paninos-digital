@@ -30,6 +30,41 @@ const getProductImage = (product) => {
     return null;
 };
 
+
+// Promotions Data
+const PROMOS = [
+    {
+        id: 1,
+        title: "Panino di Pollo",
+        description: "Disfruta nuestro Panino di Pollo con",
+        highlight: "20% OFF",
+        image: "SAND POLLO.JPG",
+        tag: "PROMO DEL MES",
+        badge: "-20%",
+        color: "text-paninos-yellow"
+    },
+    {
+        id: 2,
+        title: "Sandwich Aloha",
+        description: "Prueba la combinación perfecta de piña y jamón",
+        highlight: "NUEVO",
+        image: "SAND ALOHA.JPG",
+        tag: "NUEVO LANZAMIENTO",
+        badge: "NEW",
+        color: "text-blue-400"
+    },
+    {
+        id: 3,
+        title: "Sandwich Atún",
+        description: "El favorito de todos los tiempos",
+        highlight: "LO MÁS VENDIDO",
+        image: "SAND ATUN.jpg",
+        tag: "FAVORITO",
+        badge: "TOP",
+        color: "text-green-400"
+    }
+];
+
 export default function Home() {
     const router = useRouter();
     const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -131,44 +166,41 @@ export default function Home() {
 
             {/* Main Content */}
             <main className="relative">
-                {/* Compact Promo Section */}
+                {/* Compact Promo Grid Section */}
                 <section className="px-4 py-6">
                     <div className="max-w-md md:max-w-3xl lg:max-w-6xl xl:max-w-7xl mx-auto">
-                        <div className="relative bg-gradient-to-br from-paninos-card to-paninos-dark rounded-2xl overflow-hidden border border-white/10 shadow-xl">
-                            {/* Promo Image */}
-                            <div className="relative h-48 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
-                                <img
-                                    src="/images/products/SAND POLLO.JPG"
-                                    alt="Promo del Mes"
-                                    className="w-full h-full object-cover opacity-80"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-paninos-dark via-transparent to-transparent"></div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {PROMOS.map((promo) => (
+                                <div key={promo.id} className="relative bg-gradient-to-br from-paninos-card to-paninos-dark rounded-xl overflow-hidden border border-white/10 shadow-lg group hover:border-paninos-yellow/30 transition-all duration-300">
+                                    {/* Compact Image */}
+                                    <div className="relative h-32 md:h-40 bg-gray-900 overflow-hidden">
+                                        <img
+                                            src={`/images/products/${promo.image}`}
+                                            alt={promo.title}
+                                            className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-paninos-dark via-transparent to-transparent"></div>
 
-                                {/* Promo Badge */}
-                                <div className="absolute top-3 right-3 bg-red-600 text-white px-4 py-2 rounded-full font-display font-bold text-lg shadow-xl">
-                                    -20%
+                                        {/* Badge */}
+                                        <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-0.5 rounded-md font-display font-bold text-xs shadow-md">
+                                            {promo.badge}
+                                        </div>
+                                    </div>
+
+                                    {/* Info */}
+                                    <div className="p-3">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <div className={`h-0.5 w-6 ${promo.color === 'text-paninos-yellow' ? 'bg-paninos-yellow' : 'bg-white/50'}`}></div>
+                                            <h3 className={`text-[10px] font-bold tracking-wider uppercase ${promo.color}`}>
+                                                {promo.tag}
+                                            </h3>
+                                        </div>
+                                        <p className="text-sm font-display font-bold text-white leading-tight">
+                                            {promo.description} <span className={promo.color}>{promo.highlight}</span>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-
-                            {/* Promo Info */}
-                            <div className="p-4">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className="h-0.5 w-8 bg-paninos-yellow"></div>
-                                    <h3 className="text-xs font-bold tracking-wider uppercase text-paninos-yellow">
-                                        Promo del Mes
-                                    </h3>
-                                </div>
-                                <p className="text-lg font-display font-bold text-white leading-tight">
-                                    Disfruta nuestro Panino di Pollo con <span className="text-paninos-yellow">20% OFF</span>
-                                </p>
-                            </div>
-
-                            {/* Carousel Dots */}
-                            <div className="flex justify-center gap-1.5 pb-3">
-                                <div className="w-6 h-1 bg-paninos-yellow rounded-full"></div>
-                                <div className="w-1.5 h-1 bg-white/30 rounded-full"></div>
-                                <div className="w-1.5 h-1 bg-white/30 rounded-full"></div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </section>
