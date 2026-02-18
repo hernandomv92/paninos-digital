@@ -76,7 +76,7 @@ export default function Home() {
             <header className="relative">
                 {/* Yellow Header Bar with Centered Logo */}
                 <div className="bg-paninos-yellow py-3">
-                    <div className="max-w-md md:max-w-3xl lg:max-w-6xl xl:max-w-7xl mx-auto flex justify-center">
+                    <div className="max-w-md md:max-w-3xl lg:max-w-6xl xl:max-w-7xl mx-auto flex flex-col items-center justify-center">
                         <Image
                             src="/images/logo.png"
                             alt="Paninos Logo"
@@ -84,16 +84,14 @@ export default function Home() {
                             height={60}
                             className="object-contain"
                         />
+                        <p className="font-lora italic text-black text-sm md:text-base mt-[-5px]">
+                            Con la mejor salsa de Ajo
+                        </p>
                     </div>
                 </div>
 
                 <div className="max-w-md md:max-w-3xl lg:max-w-6xl xl:max-w-7xl mx-auto px-4 pt-6 pb-6">
-                    {/* Welcome Text */}
-                    <div className="text-center mb-6">
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-1">
-                            ¡Bienvenido a Paninos!
-                        </h2>
-                    </div>
+
 
                     {/* Compact CTA Buttons */}
                     <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-4 mb-4 md:max-w-xl md:mx-auto">
@@ -305,12 +303,7 @@ export default function Home() {
                         <span className="text-xs font-bold">Pedidos</span>
                     </button>
 
-                    <button className="flex flex-col items-center gap-0.5 px-4 py-2 text-gray-400 hover:text-white transition-colors">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <span className="text-xs font-bold">Perfil</span>
-                    </button>
+
                 </div>
             </nav>
         </div>

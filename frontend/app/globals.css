@@ -8,8 +8,10 @@
   --color-paninos-dark: #121212;
   --color-paninos-card: #1E1E1E;
 
+
   --font-oswald: var(--font-oswald), sans-serif;
   --font-roboto: var(--font-roboto), sans-serif;
+  --font-lora: var(--font-lora), serif;
 
   --font-sans: var(--font-roboto), ui-sans-serif, system-ui;
   --font-display: var(--font-oswald), ui-sans-serif, system-ui;

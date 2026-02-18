@@ -1,4 +1,5 @@
-import { Oswald, Roboto } from "next/font/google";
+
+import { Oswald, Roboto, Lora } from "next/font/google";
 import "./globals.css";
 
 const oswald = Oswald({
@@ -14,6 +15,13 @@ const roboto = Roboto({
   display: "swap",
 });
 
+const lora = Lora({
+  subsets: ["latin"],
+  variable: "--font-lora",
+  display: "swap",
+  style: ["italic", "normal"],
+});
+
 export const metadata = {
   title: "Paninos - Menú Digital",
   description: "Los mejores sándwiches con la mejor salsa de ajo.",
@@ -22,7 +30,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body className={`${oswald.variable} ${roboto.variable} font-sans antialiased bg-[#121212] text-white`}>
+      <body className={`${oswald.variable} ${roboto.variable} ${lora.variable} font-sans antialiased bg-[#121212] text-white`}>
         {children}
       </body>
     </html>
