@@ -27,3 +27,24 @@
 1.  `docker system prune -a` to clear space.
 2.  Restart Traefik if SSL fails.
 3.  Check `docker stats` for memory leaks.
+
+## 🛠️ Manual Deployment (No Easypanel)
+If Easypanel is inaccessible, use the manual `docker-compose.prod.yml`:
+
+1.  **SSH into Server:**
+    ```bash
+    ssh root@your-ip
+    cd /etc/easypanel/projects/paninos/Antigravity-Paninos  # Adjust path if needed
+    ```
+2.  **Update Code:**
+    ```bash
+    git pull origin main
+    ```
+3.  **Deploy:**
+    ```bash
+    docker-compose -f docker-compose.prod.yml up -d --build
+    ```
+4.  **Cleanup:**
+    ```bash
+    docker image prune -f
+    ```

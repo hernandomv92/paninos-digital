@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    container_name: paninos_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DJANGO_ALLOWED_HOSTS=*
+    networks:
+      - paninos_net
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health/ || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend (Next.js)
+  frontend:
+    container_name: paninos_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      # Browser-side Public URL (User sees this)
+      - NEXT_PUBLIC_API_URL=https://paninos.co/api
+      # Server-side Internal URL (SSR uses this)
+      - INTERNAL_API_URL=http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - paninos_net
+
+networks:
+  paninos_net:
+    driver: bridge
