@@ -119,11 +119,12 @@ if DATABASE_URL:
     if 'OPTIONS' not in DATABASES['default']:
         DATABASES['default']['OPTIONS'] = {}
     
+
     # Ensure we're using the correct port (6543 for Transaction Pooler)
     # This is a safety check - if somehow the port is 5432, override it
-    if DATABASES['default'].get('PORT') == 5432 or DATABASES['default'].get('PORT') == '5432':
-        DATABASES['default']['PORT'] = 6543
-        print("WARNING: Overriding port 5432 to 6543 (Transaction Pooler)")
+    # if DATABASES['default'].get('PORT') == 5432 or DATABASES['default'].get('PORT') == '5432':
+    #     DATABASES['default']['PORT'] = 6543
+    #     print("WARNING: Overriding port 5432 to 6543 (Transaction Pooler)")
     
     # Add statement timeout for pooler
     DATABASES['default']['OPTIONS']['options'] = '-c statement_timeout=60s'
