@@ -26,7 +26,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=easypanel"
-      # API Router
+      - "traefik.http.routers.paninos-api.priority=100"
       - "traefik.http.routers.paninos-api.rule=Host(`api.paninos.co`)"
       - "traefik.http.routers.paninos-api.entrypoints=https"
       - "traefik.http.routers.paninos-api.tls=true"
@@ -55,7 +55,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=easypanel"
-      # Web Router
+      - "traefik.http.routers.paninos-web.priority=100"
       - "traefik.http.routers.paninos-web.rule=Host(`paninos.co`)"
       - "traefik.http.routers.paninos-web.entrypoints=https"
       - "traefik.http.routers.paninos-web.tls=true"
