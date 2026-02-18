@@ -4,7 +4,7 @@
 @source "../app";
 
 @theme {
-  --color-paninos-yellow: #FFC400;
+  --color-paninos-yellow: #FFDE59;
   --color-paninos-dark: #121212;
   --color-paninos-card: #1E1E1E;
 
@@ -20,4 +20,13 @@ body {
   padding: 0;
   background-color: var(--color-paninos-dark);
   color: white;
+}
+
+/* Hide Next.js development indicator */
+#__next-build-watcher {
+  display: none !important;
+}
+
+nextjs-portal {
+  display: none !important;
 }
