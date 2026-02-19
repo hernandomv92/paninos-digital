@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import UpsellDrinksModal from './UpsellDrinksModal';
 
-// Image mapping (igual que en Menu.jsx)
 const PRODUCT_IMAGES = {
     'SAND ALOHA': 'SAND ALOHA.JPG',
     'SAND ATUN': 'SAND ATUN.jpg',
@@ -25,27 +25,20 @@ const getProductImage = (product) => {
     return PRODUCT_IMAGES[key] ? `/images/products/${PRODUCT_IMAGES[key]}` : null;
 };
 
-/**
- * CartDrawer
- * Panel lateral (derecha) que muestra el carrito de compras.
- * 
- * Props:
- * - isOpen: boolean
- * - onClose: () => void
- */
+// IDs de bebidas locales (deben coincidir con UpsellDrinksModal)
+const DRINK_IDS = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'];
+
 export default function CartDrawer({ isOpen, onClose }) {
     const router = useRouter();
-    const { items, totalItems, totalPrice, updateQuantity, removeItem, location, orderType } = useCart();
+    const { items, totalItems, totalPrice, updateQuantity, removeItem, location } = useCart();
 
-    // Bloquear scroll del body cuando el drawer está abierto
+    const [showUpsell, setShowUpsell] = useState(false);
+
+    // Bloquear scroll del body
     useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
+        document.body.style.overflow = (isOpen || showUpsell) ? 'hidden' : '';
         return () => { document.body.style.overflow = ''; };
-    }, [isOpen]);
+    }, [isOpen, showUpsell]);
 
     // Cerrar con Escape
     useEffect(() => {
@@ -54,31 +47,57 @@ export default function CartDrawer({ isOpen, onClose }) {
         return () => window.removeEventListener('keydown', handler);
     }, [onClose]);
 
-    const handleCheckout = () => {
+    // Detectar si el carrito tiene solo sandwiches (sin bebidas ya agregadas)
+    const hasOnlySandwiches = items.length > 0 && items.every(
+        ({ product }) => !DRINK_IDS.includes(product.id)
+    );
+
+    const handleCheckoutClick = () => {
+        if (hasOnlySandwiches) {
+            // Mostrar upsell antes de ir al checkout
+            setShowUpsell(true);
+        } else {
+            goToCheckout();
+        }
+    };
+
+    const goToCheckout = () => {
+        setShowUpsell(false);
         onClose();
         router.push('/checkout');
     };
 
     return (
         <>
-            {/* Backdrop */}
+            {/* Modal de upsell de bebidas */}
+            <UpsellDrinksModal
+                isOpen={showUpsell}
+                onClose={() => setShowUpsell(false)}
+                onContinue={goToCheckout}
+            />
+
+            {/* Backdrop del drawer */}
             <div
-                className={`fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                className={`fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm transition-opacity duration-300
+                    ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
                 onClick={onClose}
             />
 
             {/* Drawer panel */}
             <div
-                className={`fixed top-0 right-0 h-full w-full sm:max-w-md z-[95] flex flex-col bg-[#161616] border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`fixed top-0 right-0 h-full w-full sm:max-w-md z-[95] flex flex-col bg-[#161616] border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out
+                    ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
                     <div>
                         <h2 className="font-display font-bold text-xl text-white">Tu Pedido</h2>
                         {location && (
-                            <p className="text-xs text-paninos-yellow font-bold tracking-wide mt-0.5 flex items-center gap-1">
-                                <span>🏪</span>
-                                <span>{location.name} · Recoger</span>
+                            <p className="text-xs text-paninos-yellow font-bold tracking-wide mt-0.5 flex items-center gap-1.5">
+                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                                </svg>
+                                {location.name} &middot; Recoger
                             </p>
                         )}
                     </div>
@@ -102,7 +121,6 @@ export default function CartDrawer({ isOpen, onClose }) {
 
                 {/* Contenido */}
                 {items.length === 0 ? (
-                    /* Carrito vacío */
                     <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
                         <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4">
                             <svg className="w-8 h-8 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,7 +137,6 @@ export default function CartDrawer({ isOpen, onClose }) {
                         </button>
                     </div>
                 ) : (
-                    /* Lista de productos */
                     <div className="flex-1 overflow-y-auto py-4 space-y-3 px-5">
                         {items.map(({ product, quantity }) => {
                             const imageUrl = getProductImage(product);
@@ -128,49 +145,34 @@ export default function CartDrawer({ isOpen, onClose }) {
                                     key={product.id}
                                     className="flex items-center gap-3 bg-[#1E1E1E] rounded-2xl p-3 border border-white/5"
                                 >
-                                    {/* Imagen pequeña del producto */}
                                     <div className="w-16 h-16 rounded-xl overflow-hidden bg-white/5 flex-shrink-0">
                                         {imageUrl ? (
-                                            <img
-                                                src={imageUrl}
-                                                alt={product.name}
-                                                className="w-full h-full object-cover"
-                                            />
+                                            <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
                                         ) : (
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <svg className="w-6 h-6 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
+                                            <div className="w-full h-full flex items-center justify-center text-2xl">
+                                                🥤
                                             </div>
                                         )}
                                     </div>
 
-                                    {/* Info */}
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-display font-bold text-sm text-white truncate">
-                                            {product.name}
-                                        </p>
+                                        <p className="font-display font-bold text-sm text-white truncate">{product.name}</p>
                                         <p className="text-paninos-yellow font-bold text-sm mt-0.5">
                                             ${(parseFloat(product.price) * quantity).toLocaleString('es-CO')}
                                         </p>
                                     </div>
 
-                                    {/* Controles de cantidad */}
                                     <div className="flex items-center gap-2 flex-shrink-0">
                                         <button
                                             onClick={() => updateQuantity(product.id, quantity - 1)}
-                                            className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
+                                            className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                                             aria-label="Reducir cantidad"
                                         >
                                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 12H4" />
                                             </svg>
                                         </button>
-
-                                        <span className="font-display font-bold text-white text-sm w-5 text-center">
-                                            {quantity}
-                                        </span>
-
+                                        <span className="font-display font-bold text-white text-sm w-5 text-center">{quantity}</span>
                                         <button
                                             onClick={() => updateQuantity(product.id, quantity + 1)}
                                             className="w-7 h-7 rounded-full bg-paninos-yellow/20 flex items-center justify-center hover:bg-paninos-yellow hover:text-black transition-all text-paninos-yellow"
@@ -180,8 +182,6 @@ export default function CartDrawer({ isOpen, onClose }) {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
                                             </svg>
                                         </button>
-
-                                        {/* Eliminar */}
                                         <button
                                             onClick={() => removeItem(product.id)}
                                             className="w-7 h-7 rounded-full bg-red-500/10 flex items-center justify-center hover:bg-red-500/30 transition-colors text-red-400 ml-1"
@@ -198,10 +198,9 @@ export default function CartDrawer({ isOpen, onClose }) {
                     </div>
                 )}
 
-                {/* Footer con total y checkout */}
+                {/* Footer */}
                 {items.length > 0 && (
                     <div className="border-t border-white/10 p-5 space-y-4">
-                        {/* Subtotal */}
                         <div className="flex items-center justify-between">
                             <span className="text-gray-400 text-sm">Subtotal</span>
                             <span className="font-display font-bold text-white text-lg">
@@ -209,22 +208,20 @@ export default function CartDrawer({ isOpen, onClose }) {
                             </span>
                         </div>
 
-                        {/* Nota de recogida */}
                         {location && (
                             <div className="bg-paninos-yellow/10 border border-paninos-yellow/20 rounded-xl px-4 py-3 flex items-center gap-3">
-                                <span className="text-lg">⏱️</span>
+                                <svg className="w-4 h-4 text-paninos-yellow flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                                 <div>
                                     <p className="text-xs font-bold text-paninos-yellow">Tiempo estimado</p>
-                                    <p className="text-xs text-gray-400">
-                                        Listo en ~{location.prepTimeMinutes} min en {location.name}
-                                    </p>
+                                    <p className="text-xs text-gray-400">Listo en ~{location.prepTimeMinutes} min en {location.name}</p>
                                 </div>
                             </div>
                         )}
 
-                        {/* CTA Checkout */}
                         <button
-                            onClick={handleCheckout}
+                            onClick={handleCheckoutClick}
                             className="w-full py-4 bg-paninos-yellow text-black font-display font-bold text-lg rounded-2xl hover:bg-white transition-colors shadow-lg shadow-paninos-yellow/20 flex items-center justify-center gap-2"
                         >
                             <span>Finalizar Pedido</span>
