@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LOCATIONS } from '@/lib/locations';
 import { useCart } from '@/context/CartContext';
+import DeliveryFlow from './DeliveryFlow';
 
 /**
  * LocationSelector
@@ -17,6 +18,7 @@ import { useCart } from '@/context/CartContext';
 export default function LocationSelector({ isOpen, onClose }) {
     const router = useRouter();
     const { setLocation, setOrderType } = useCart();
+    const [showDelivery, setShowDelivery] = useState(false);
 
     // Bloquear scroll del body cuando el modal está abierto
     useEffect(() => {
@@ -48,6 +50,18 @@ export default function LocationSelector({ isOpen, onClose }) {
     };
 
     if (!isOpen) return null;
+
+    // Mostrar el flujo de domicilio (pantalla completa)
+    if (showDelivery) {
+        return (
+            <DeliveryFlow
+                onClose={() => {
+                    setShowDelivery(false);
+                    onClose();
+                }}
+            />
+        );
+    }
 
     return (
         // Backdrop
@@ -156,11 +170,12 @@ export default function LocationSelector({ isOpen, onClose }) {
 
                         {/* CTA secundario: Domicilio */}
                         <button
-                            onClick={onClose}
-                            className="w-full py-3.5 rounded-2xl border border-white/10 text-gray-400 text-sm font-bold hover:border-white/20 hover:text-white transition-all flex items-center justify-center gap-2"
+                            onClick={() => setShowDelivery(true)}
+                            className="w-full py-3.5 rounded-2xl border border-white/10 text-gray-400 text-sm font-bold hover:border-paninos-yellow/30 hover:text-paninos-yellow transition-all flex items-center justify-center gap-2"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             Prefiero pedir a domicilio
                         </button>

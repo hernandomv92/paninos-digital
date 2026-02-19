@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import api from '@/lib/api';
 import LocationSelector from '@/components/LocationSelector';
+import DeliveryFlow from '@/components/DeliveryFlow';
 
 // Image mapping for products
 const PRODUCT_IMAGES = {
@@ -73,6 +74,8 @@ export default function Home() {
 
     // Estado del modal de selección de sede
     const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
+    // Estado del flujo de domicilio
+    const [showDeliveryFlow, setShowDeliveryFlow] = useState(false);
 
     useEffect(() => {
         const fetchFeaturedProducts = async () => {
@@ -106,14 +109,21 @@ export default function Home() {
     };
 
     const handleDelivery = () => {
-        // TODO Sprint 2: abrir flujo de domicilio (validación de dirección)
-        // Por ahora, ir al menú directamente
-        router.push('/menu?type=delivery');
+        setShowDeliveryFlow(true);
     };
 
     const handleContactB2B = () => {
         window.open('https://wa.me/573137258091?text=Hola!%20Me%20interesa%20información%20sobre%20catering%20corporativo', '_blank');
     };
+
+    // Mostrar el flujo de domicilio como pantalla completa
+    if (showDeliveryFlow) {
+        return (
+            <DeliveryFlow
+                onClose={() => setShowDeliveryFlow(false)}
+            />
+        );
+    }
 
     return (
         <div className="min-h-screen bg-black text-white font-sans pb-20">
