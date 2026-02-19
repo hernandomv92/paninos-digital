@@ -121,7 +121,7 @@ export default function Home() {
     return (
         <div className="min-h-screen bg-black text-white font-sans pb-20">
             {/* Transparent Sticky Header */}
-            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-paninos-yellow/90 backdrop-blur-md py-2 shadow-lg' : 'bg-transparent py-4 ml-6'}`}>
+            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-paninos-yellow/70 backdrop-blur-md py-2 shadow-lg' : 'bg-transparent py-4 ml-6'}`}>
                 <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
                     {/* Logo (Smaller on scroll) */}
                     <div className={`transition-all duration-300 ${scrolled ? 'w-20' : 'w-24'}`}>
@@ -138,8 +138,8 @@ export default function Home() {
                     <button
                         onClick={() => router.push('/menu')}
                         className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${scrolled
-                                ? 'bg-black text-paninos-yellow hover:bg-black/80'
-                                : 'bg-paninos-yellow/20 text-paninos-yellow hover:bg-paninos-yellow hover:text-black'
+                            ? 'bg-black text-paninos-yellow hover:bg-black/80'
+                            : 'bg-paninos-yellow/20 text-paninos-yellow hover:bg-paninos-yellow hover:text-black'
                             }`}
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +150,7 @@ export default function Home() {
             </header>
 
             {/* Immersive Hero Section */}
-            <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+            <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
                     <Image
@@ -163,14 +163,11 @@ export default function Home() {
                     <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/90"></div>
                 </div>
 
+
                 {/* Hero Content */}
-                <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-16">
-                    <p className="font-lora italic text-paninos-yellow text-lg md:text-xl mb-2 animate-fade-in-up">
+                <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-10 md:mt-0">
+                    <h1 className="font-lora italic text-paninos-yellow text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up leading-tight drop-shadow-lg">
                         Con la mejor salsa de Ajo
-                    </p>
-                    <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 leading-tight drop-shadow-xl animate-fade-in-up delay-100">
-                        EL VERDADERO <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-paninos-yellow to-yellow-200">SABOR</span>
                     </h1>
 
                     {/* Main CTAs */}
