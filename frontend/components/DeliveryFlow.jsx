@@ -131,24 +131,41 @@ export default function DeliveryFlow({ onClose }) {
 
     // ── Formulario de barrio ───────────────────────────────────────────────────
     return (
-        <div className="min-h-screen bg-paninos-dark text-white font-sans flex flex-col">
+        <div className="fixed inset-0 z-[200] bg-paninos-dark text-white font-sans flex flex-col overflow-y-auto">
 
             {/* Header */}
-            <header className="flex items-center gap-3 px-4 py-4 border-b border-white/8">
+            <header className="flex items-center justify-between px-4 py-4 border-b border-white/8">
+                {/* Botón volver */}
                 <button
                     onClick={onClose || (() => router.back())}
-                    className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                    className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group"
                     aria-label="Volver"
                 >
-                    <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </div>
+                    <span className="text-sm font-bold hidden sm:block">Volver</span>
+                </button>
+
+                {/* Título centrado opcional */}
+                <p className="text-xs font-bold tracking-widest text-paninos-yellow uppercase">
+                    Domicilio
+                </p>
+
+                {/* Botón cerrar (X) */}
+                <button
+                    onClick={onClose || (() => router.back())}
+                    className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors text-gray-400 hover:text-white"
+                    aria-label="Cerrar"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-                <div className="flex-1 flex justify-center">
-                    <span className="font-display font-bold text-lg text-white tracking-wide">PANINOS</span>
-                </div>
-                <div className="w-9" />
             </header>
+
 
             {/* Contenido */}
             <div className="flex-1 flex flex-col px-5 pt-8 pb-10">

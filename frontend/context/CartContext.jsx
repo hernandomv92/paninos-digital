@@ -10,6 +10,7 @@ const ACTIONS = {
     CLEAR_CART: 'CLEAR_CART',
     SET_LOCATION: 'SET_LOCATION',
     SET_ORDER_TYPE: 'SET_ORDER_TYPE',
+    SET_DELIVERY_ADDRESS: 'SET_DELIVERY_ADDRESS',
 };
 
 // ─── Initial State ─────────────────────────────────────────────────────────────
@@ -74,6 +75,9 @@ function cartReducer(state, action) {
         case ACTIONS.SET_ORDER_TYPE:
             return { ...state, orderType: action.payload };
 
+        case ACTIONS.SET_DELIVERY_ADDRESS:
+            return { ...state, deliveryAddress: action.payload };
+
         default:
             return state;
     }
@@ -118,6 +122,8 @@ export function CartProvider({ children }) {
 
     const setOrderType = (type) => dispatch({ type: ACTIONS.SET_ORDER_TYPE, payload: type });
 
+    const setDeliveryAddress = (address) => dispatch({ type: ACTIONS.SET_DELIVERY_ADDRESS, payload: address });
+
     // ─── Computed values ────────────────────────────────────────────────────────
     const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -151,6 +157,7 @@ export function CartProvider({ children }) {
                 clearCart,
                 setLocation,
                 setOrderType,
+                setDeliveryAddress,
                 // Helpers
                 isInCart,
                 getQuantity,
