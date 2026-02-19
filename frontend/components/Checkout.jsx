@@ -77,6 +77,9 @@ const PAYMENT_METHODS_DELIVERY = [
     },
 ];
 
+// ── Costo de domicilio ────────────────────────────────────────────────────────
+const DELIVERY_FEE = 4900;
+
 // ── Helper: icono de repartidor SVG ───────────────────────────────────────────
 function DeliveryIcon({ className = 'w-5 h-5' }) {
     return (
@@ -95,6 +98,7 @@ export default function Checkout() {
     const { items, totalPrice, totalItems, location, orderType, deliveryAddress: savedAddress, clearCart } = useCart();
 
     const isDelivery = orderType === 'delivery';
+    const grandTotal = isDelivery ? totalPrice + DELIVERY_FEE : totalPrice;
 
     const [formData, setFormData] = useState({
         customerName: '',
@@ -175,7 +179,8 @@ export default function Checkout() {
                     quantity,
                     unit_price: product.price,
                 })),
-                total: totalPrice,
+                total: grandTotal,
+                delivery_fee: isDelivery ? DELIVERY_FEE : 0,
             };
 
             // TODO: descomentar cuando el endpoint esté listo:
@@ -187,13 +192,15 @@ export default function Checkout() {
 
             const orderId = response.data.id;
             try { localStorage.setItem('paninos_last_order', orderId); } catch { /* noop */ }
+            try { localStorage.setItem('paninos_last_order_total', grandTotal); } catch { /* noop */ }
             clearCart();
             router.push(
                 `/confirmacion?order=${orderId}` +
                 `&name=${encodeURIComponent(formData.customerName)}` +
                 `&location=${encodeURIComponent(location?.name || '')}` +
                 `&payment=${paymentMethod}` +
-                `&type=${orderType || 'pickup'}`
+                `&type=${orderType || 'pickup'}` +
+                `&total=${grandTotal}`
             );
 
         } catch (err) {
@@ -206,10 +213,10 @@ export default function Checkout() {
 
     // ── Etiqueta del botón submit ──────────────────────────────────────────────
     const submitLabel = paymentMethod === 'online'
-        ? `Pagar · $${totalPrice.toLocaleString('es-CO')}`
+        ? `Pagar · $${grandTotal.toLocaleString('es-CO')}`
         : isDelivery
-            ? `Confirmar Domicilio · $${totalPrice.toLocaleString('es-CO')}`
-            : `Confirmar Pedido · $${totalPrice.toLocaleString('es-CO')}`;
+            ? `Confirmar Domicilio · $${grandTotal.toLocaleString('es-CO')}`
+            : `Confirmar Pedido · $${grandTotal.toLocaleString('es-CO')}`;
 
     const submitFooter = paymentMethod === 'online'
         ? 'Pago seguro procesado por Bold. No almacenamos datos de tarjetas.'
@@ -242,7 +249,7 @@ export default function Checkout() {
                     {/* Badge de tipo de pedido */}
                     <div className="ml-auto">
                         <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${isDelivery
-                                ? 'bg-blue-500/15 text-blue-400 border border-blue-500/20'
+                                ? 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/25'
                                 : 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/20'
                             }`}>
                             {isDelivery ? '🛵 Domicilio' : '🏪 Recogida'}
@@ -286,24 +293,43 @@ export default function Checkout() {
                             })}
                         </div>
 
+                        {/* Fila de costo de domicilio */}
+                        {isDelivery && (
+                            <div className="px-5 py-3 border-t border-white/5 flex items-center justify-between">
+                                <div className="flex items-center gap-2 text-gray-400">
+                                    <svg className="w-4 h-4 text-paninos-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" />
+                                        <rect x="9" y="11" width="14" height="10" rx="2" />
+                                        <circle cx="12" cy="21" r="1" />
+                                        <circle cx="20" cy="21" r="1" />
+                                    </svg>
+                                    <span className="text-sm">Costo de domicilio</span>
+                                </div>
+                                <span className="text-sm font-bold text-paninos-yellow">
+                                    +${DELIVERY_FEE.toLocaleString('es-CO')}
+                                </span>
+                            </div>
+                        )}
+
                         <div className="px-5 py-4 border-t border-white/10 flex items-center justify-between">
-                            <span className="font-display font-bold text-white">TOTAL</span>
+                            <div>
+                                <span className="font-display font-bold text-white">TOTAL</span>
+                                {isDelivery && (
+                                    <p className="text-[10px] text-gray-600 mt-0.5">Incluye domicilio</p>
+                                )}
+                            </div>
                             <span className="font-display font-bold text-2xl text-paninos-yellow">
-                                ${totalPrice.toLocaleString('es-CO')}
+                                ${grandTotal.toLocaleString('es-CO')}
                             </span>
                         </div>
                     </div>
 
                     {/* ── Card de sede / zona de entrega ─────────────────────── */}
                     {location && (
-                        <div className={`rounded-2xl p-4 flex items-center gap-4 ${isDelivery
-                                ? 'bg-blue-500/8 border border-blue-500/20'
-                                : 'bg-paninos-yellow/10 border border-paninos-yellow/20'
-                            }`}>
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${isDelivery ? 'bg-blue-500/15' : 'bg-paninos-yellow/20'
-                                }`}>
+                        <div className="bg-paninos-yellow/10 border border-paninos-yellow/20 rounded-2xl p-4 flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-paninos-yellow/20 flex items-center justify-center flex-shrink-0">
                                 {isDelivery
-                                    ? <DeliveryIcon className="w-5 h-5 text-blue-400" />
+                                    ? <DeliveryIcon className="w-5 h-5 text-paninos-yellow" />
                                     : (
                                         <svg className="w-5 h-5 text-paninos-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -313,7 +339,7 @@ export default function Checkout() {
                                 }
                             </div>
                             <div>
-                                <p className={`font-display font-bold text-sm ${isDelivery ? 'text-blue-400' : 'text-paninos-yellow'}`}>
+                                <p className="font-display font-bold text-sm text-paninos-yellow">
                                     {isDelivery ? `Zona cubierta por ${location.name}` : location.name}
                                 </p>
                                 <p className="text-xs text-gray-400">{location.address}</p>
@@ -331,7 +357,7 @@ export default function Checkout() {
                     {isDelivery && (
                         <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 overflow-hidden">
                             <div className="px-5 py-4 border-b border-white/5 flex items-center gap-2">
-                                <DeliveryIcon className="w-4 h-4 text-blue-400" />
+                                <DeliveryIcon className="w-4 h-4 text-paninos-yellow" />
                                 <div>
                                     <h2 className="font-display font-bold text-white text-base">Dirección de Entrega</h2>
                                     <p className="text-xs text-gray-500 mt-0.5">¿A dónde te llevamos el pedido?</p>
@@ -359,7 +385,7 @@ export default function Checkout() {
                                             onChange={handleInputChange}
                                             placeholder="Ej: Cra 5 # 12-34, Barrio Granada"
                                             autoComplete="street-address"
-                                            className="w-full bg-[#252525] border border-white/10 rounded-xl px-4 py-3 pl-11 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-all"
+                                            className="w-full bg-[#252525] border border-white/10 rounded-xl px-4 py-3 pl-11 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-paninos-yellow/50 focus:ring-1 focus:ring-paninos-yellow/20 transition-all"
                                             required
                                         />
                                     </div>

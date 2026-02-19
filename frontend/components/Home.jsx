@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import api from '@/lib/api';
 import LocationSelector from '@/components/LocationSelector';
 import DeliveryFlow from '@/components/DeliveryFlow';
 
@@ -32,44 +31,32 @@ const getProductImage = (product) => {
     return null;
 };
 
-// Promotions Data
-const PROMOS = [
+// Carrusel de sandwiches destacados — 3 fijos, sin promociones
+const CAROUSEL_SANDWICHES = [
     {
         id: 1,
-        title: "Panino di Pollo",
-        description: "Disfruta nuestro Panino di Pollo con",
-        highlight: "20% OFF",
-        image: "SAND POLLO.JPG",
-        tag: "PROMO DEL MES",
-        badge: "-20%",
-        color: "text-paninos-yellow"
+        name: 'Sand Atún',
+        image: 'SAND ATUN.jpg',
+        description: 'La opción clásica que nunca falla. Atún fresco con nuestra salsa de ajo.',
     },
     {
         id: 2,
-        title: "Sandwich Aloha",
-        description: "Prueba la combinación perfecta de piña y jamón",
-        highlight: "NUEVO",
-        image: "SAND ALOHA.JPG",
-        tag: "NUEVO LANZAMIENTO",
-        badge: "NEW",
-        color: "text-blue-400"
+        name: 'Sand Supremo Pollo',
+        image: 'SAND SUPREMO POLLO.JPG',
+        description: 'Pollo jugoso, tomate, lechuga y nuestra salsa especial suprema.',
     },
     {
         id: 3,
-        title: "Sandwich Atún",
-        description: "El favorito de todos los tiempos",
-        highlight: "LO MÁS VENDIDO",
-        image: "SAND ATUN.jpg",
-        tag: "FAVORITO",
-        badge: "TOP",
-        color: "text-green-400"
-    }
+        name: 'Sand Ropa Vieja',
+        image: 'SAND ROPA VIEJA.JPG',
+        description: 'Carne desmechada estilo casero con el sabor que nos caracteriza.',
+    },
 ];
 
 export default function Home() {
     const router = useRouter();
-    const [featuredProducts, setFeaturedProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // Carrusel
+    const [carouselIndex, setCarouselIndex] = useState(0);
     const [scrolled, setScrolled] = useState(false);
 
     // Estado del modal de selección de sede
@@ -82,23 +69,12 @@ export default function Home() {
     const [showOrderTooltip, setShowOrderTooltip] = useState(false);
     const tooltipTimerRef = useRef(null);
 
+    // Auto-rotación carrusel cada 2 s
     useEffect(() => {
-        const fetchFeaturedProducts = async () => {
-            try {
-                setLoading(true);
-                const response = await api.get('menu/');
-                const allProducts = response.data.flatMap(category => category.products);
-                const sandwiches = allProducts.filter(product =>
-                    product.name.toUpperCase().startsWith('SAND') && product.is_available
-                );
-                setFeaturedProducts(sandwiches.slice(0, 3));
-            } catch (err) {
-                console.error('Error fetching products:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchFeaturedProducts();
+        const timer = setInterval(() => {
+            setCarouselIndex(prev => (prev + 1) % CAROUSEL_SANDWICHES.length);
+        }, 2000);
+        return () => clearInterval(timer);
     }, []);
 
     // Leer último pedido de localStorage
@@ -161,8 +137,11 @@ export default function Home() {
                 onClose={() => setIsLocationSelectorOpen(false)}
             />
 
-            {/* Transparent Sticky Header */}
-            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-paninos-yellow/70 backdrop-blur-md py-2 shadow-lg' : 'bg-transparent py-4 ml-6'}`}>
+            {/* Sticky Header */}
+            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+                    ? 'bg-paninos-yellow shadow-lg shadow-black/30 rounded-b-3xl py-2'
+                    : 'bg-transparent py-4'
+                }`}>
                 <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
                     <div className={`transition-all duration-300 ${scrolled ? 'w-20' : 'w-24'}`}>
                         <Image
@@ -178,8 +157,8 @@ export default function Home() {
                     <button
                         onClick={() => router.push('/menu')}
                         className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${scrolled
-                            ? 'bg-black text-paninos-yellow hover:bg-black/80'
-                            : 'bg-paninos-yellow/20 text-paninos-yellow hover:bg-paninos-yellow hover:text-black'
+                                ? 'bg-black text-paninos-yellow hover:bg-black/80'
+                                : 'bg-paninos-yellow/20 text-paninos-yellow hover:bg-paninos-yellow hover:text-black'
                             }`}
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,49 +224,75 @@ export default function Home() {
 
             {/* Main Content */}
             <main className="relative">
-                {/* Compact Promo Grid Section */}
+                {/* ── Carrusel de sandwiches ─────────────────────────────── */}
                 <section className="px-4 py-6 relative z-10 -mt-20">
-                    <div className="max-w-md md:max-w-3xl lg:max-w-6xl xl:max-w-7xl mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {PROMOS.map((promo) => (
-                                <div
-                                    key={promo.id}
-                                    onClick={handleStorePickup}
-                                    className="group relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"
-                                >
-                                    {/* Background Image */}
-                                    <div className="absolute inset-0">
-                                        <img
-                                            src={`/images/products/${promo.image}`}
-                                            alt={promo.title}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-80 transition-opacity"></div>
-                                    </div>
+                    <div className="max-w-md md:max-w-sm mx-auto">
 
-                                    {/* Content */}
-                                    <div className="relative p-6 h-64 flex flex-col justify-end">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <span className={`text-[10px] font-bold tracking-widest uppercase px-2 py-1 rounded bg-white/10 ${promo.color} backdrop-blur-sm`}>
-                                                {promo.tag}
-                                            </span>
-                                        </div>
-                                        <h3 className="text-xl font-display font-bold text-white mb-1">
-                                            {promo.title}
+                        {/* Card única con crossfade */}
+                        <div
+                            onClick={handleStorePickup}
+                            className="group relative rounded-2xl overflow-hidden shadow-2xl cursor-pointer h-72"
+                        >
+                            {CAROUSEL_SANDWICHES.map((sandwich, index) => (
+                                <div
+                                    key={sandwich.id}
+                                    className="absolute inset-0 transition-opacity duration-700"
+                                    style={{ opacity: carouselIndex === index ? 1 : 0 }}
+                                >
+                                    {/* Imagen */}
+                                    <img
+                                        src={`/images/products/${sandwich.image}`}
+                                        alt={sandwich.name}
+                                        className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-700"
+                                    />
+                                    {/* Gradiente */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+
+                                    {/* Texto */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                                        <p className="text-[10px] font-bold tracking-widest text-paninos-yellow uppercase mb-1">
+                                            Nuestros Sandwiches
+                                        </p>
+                                        <h3 className="text-2xl font-display font-bold text-white leading-tight mb-1">
+                                            {sandwich.name}
                                         </h3>
-                                        <p className="text-sm font-light text-gray-300 line-clamp-2">
-                                            {promo.description} <span className={promo.color + " font-bold"}>{promo.highlight}</span>
+                                        <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
+                                            {sandwich.description}
                                         </p>
                                     </div>
                                 </div>
                             ))}
+
+                            {/* Indicadores de punto */}
+                            <div className="absolute top-4 right-4 flex gap-1.5">
+                                {CAROUSEL_SANDWICHES.map((_, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={(e) => { e.stopPropagation(); setCarouselIndex(i); }}
+                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${carouselIndex === i
+                                            ? 'bg-paninos-yellow w-5'
+                                            : 'bg-white/30 hover:bg-white/60'
+                                            }`}
+                                    />
+                                ))}
+                            </div>
+
+                            {/* CTA overlay */}
+                            <div className="absolute bottom-4 right-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <span className="text-xs font-bold text-paninos-yellow flex items-center gap-1">
+                                    Ver menú
+                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Compact Business Section */}
+                {/* ── Paninos para Empresas ──────────────────────────────── */}
                 <section className="px-4 py-6">
-                    <div className="max-w-md md:max-w-3xl lg:max-w-6xl xl:max-w-7xl mx-auto bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+                    <div className="max-w-md md:max-w-sm mx-auto bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
                         <div className="flex flex-col items-center text-center">
                             <div className="inline-flex items-center justify-center w-12 h-12 bg-paninos-yellow/10 border-2 border-paninos-yellow rounded-xl mb-3">
                                 <svg className="w-6 h-6 text-paninos-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -313,87 +318,6 @@ export default function Home() {
                                 <span>CONTACTAR VENTAS B2B</span>
                             </button>
                         </div>
-                    </div>
-                </section>
-
-                {/* Featured Products Grid */}
-                <section className="px-4 py-10">
-                    <div className="max-w-md md:max-w-3xl lg:max-w-6xl xl:max-w-7xl mx-auto">
-                        <div className="flex items-end justify-between mb-8">
-                            <div>
-                                <h2 className="text-3xl font-display font-bold mb-1">
-                                    Tus <span className="text-paninos-yellow">Favoritos</span>
-                                </h2>
-                                <div className="h-1 w-20 bg-paninos-yellow rounded-full"></div>
-                            </div>
-
-                            <button
-                                onClick={handleStorePickup}
-                                className="text-paninos-yellow hover:text-white transition-colors font-bold text-sm flex items-center gap-1"
-                            >
-                                <span>VER MENÚ COMPLETO</span>
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        {loading ? (
-                            <div className="flex justify-center py-10">
-                                <div className="animate-spin rounded-full h-8 w-8 border-4 border-paninos-yellow border-t-transparent"></div>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {featuredProducts.slice(0, 3).map((product) => {
-                                    const imageUrl = getProductImage(product);
-                                    return (
-                                        <div
-                                            key={product.id}
-                                            onClick={handleStorePickup}
-                                            className="group bg-[#1A1A1A] rounded-2xl overflow-hidden hover:bg-[#252525] transition-all duration-300 cursor-pointer"
-                                        >
-                                            <div className="flex flex-row md:flex-col h-full">
-                                                {/* Product Image */}
-                                                <div className="relative w-1/3 md:w-full md:h-56">
-                                                    {imageUrl ? (
-                                                        <img
-                                                            src={imageUrl}
-                                                            alt={product.name}
-                                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                                        />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center bg-white/5">
-                                                            <svg className="w-10 h-10 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                            </svg>
-                                                        </div>
-                                                    )}
-                                                </div>
-
-                                                {/* Product Info */}
-                                                <div className="flex-1 p-5 flex flex-col justify-center">
-                                                    <h3 className="text-lg font-display font-bold mb-2 line-clamp-1 group-hover:text-paninos-yellow transition-colors">
-                                                        {product.name}
-                                                    </h3>
-
-                                                    <div className="flex items-center justify-between mt-auto">
-                                                        <span className="text-xl font-display font-bold text-paninos-yellow">
-                                                            ${parseFloat(product.price).toLocaleString('es-CO')}
-                                                        </span>
-
-                                                        <div className="w-10 h-10 bg-paninos-yellow/20 text-paninos-yellow rounded-full flex items-center justify-center group-hover:bg-paninos-yellow group-hover:text-black transition-all duration-300">
-                                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
                     </div>
                 </section>
             </main>
