@@ -53,3 +53,13 @@ body {
 nextjs-portal {
   display: none !important;
 }
+
+/* Ocultar scrollbar horizontal (pestañas del menú) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
