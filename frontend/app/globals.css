@@ -63,3 +63,16 @@ nextjs-portal {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Tooltip animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

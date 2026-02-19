@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import api from '@/lib/api';
@@ -77,6 +77,11 @@ export default function Home() {
     // Estado del flujo de domicilio
     const [showDeliveryFlow, setShowDeliveryFlow] = useState(false);
 
+    // Pedidos — último pedido realizado (persiste en localStorage)
+    const [lastOrderId, setLastOrderId] = useState(null);
+    const [showOrderTooltip, setShowOrderTooltip] = useState(false);
+    const tooltipTimerRef = useRef(null);
+
     useEffect(() => {
         const fetchFeaturedProducts = async () => {
             try {
@@ -96,6 +101,17 @@ export default function Home() {
         fetchFeaturedProducts();
     }, []);
 
+    // Leer último pedido de localStorage
+    useEffect(() => {
+        try {
+            const saved = localStorage.getItem('paninos_last_order');
+            if (saved) setLastOrderId(saved);
+        } catch { /* noop */ }
+    }, []);
+
+    // Cleanup del timer del tooltip
+    useEffect(() => () => clearTimeout(tooltipTimerRef.current), []);
+
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
@@ -113,7 +129,18 @@ export default function Home() {
     };
 
     const handleContactB2B = () => {
-        window.open('https://wa.me/573137258091?text=Hola!%20Me%20interesa%20información%20sobre%20catering%20corporativo', '_blank');
+        window.open('https://wa.me/573218898930?text=Hola!%20Me%20interesa%20información%20sobre%20catering%20corporativo%20con%20Paninos', '_blank');
+    };
+
+    const handlePedidosClick = () => {
+        if (lastOrderId) {
+            router.push(`/confirmacion?order=${lastOrderId}`);
+        } else {
+            // Mostrar tooltip flotante por 2.5 s
+            setShowOrderTooltip(true);
+            clearTimeout(tooltipTimerRef.current);
+            tooltipTimerRef.current = setTimeout(() => setShowOrderTooltip(false), 2500);
+        }
     };
 
     // Mostrar el flujo de domicilio como pantalla completa
@@ -391,15 +418,31 @@ export default function Home() {
                         <span className="text-xs font-bold">Menú</span>
                     </button>
 
-                    <button
-                        onClick={handleStorePickup}
-                        className="flex flex-col items-center gap-0.5 px-4 py-2 text-gray-400 hover:text-white transition-colors"
-                    >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        <span className="text-xs font-bold">Pedidos</span>
-                    </button>
+                    <div className="relative">
+                        {/* Tooltip flotante */}
+                        {showOrderTooltip && (
+                            <div
+                                className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 whitespace-nowrap"
+                                style={{ animation: 'fadeInUp 0.2s ease' }}
+                            >
+                                <div className="bg-[#2A2A2A] border border-white/10 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl shadow-xl">
+                                    Aún no tienes pedidos realizados
+                                    <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0"
+                                        style={{ borderLeft: '6px solid transparent', borderRight: '6px solid transparent', borderTop: '6px solid rgba(255,255,255,0.08)' }}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                        <button
+                            onClick={handlePedidosClick}
+                            className="flex flex-col items-center gap-0.5 px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                            <span className="text-xs font-bold">Pedidos</span>
+                        </button>
+                    </div>
                 </div>
             </nav>
         </div>

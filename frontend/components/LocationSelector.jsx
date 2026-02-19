@@ -168,16 +168,46 @@ export default function LocationSelector({ isOpen, onClose }) {
                             <div className="flex-1 h-px bg-white/10" />
                         </div>
 
-                        {/* CTA secundario: Domicilio */}
+                        {/* CTA secundario: Domicilio — card al mismo nivel que las sedes */}
                         <button
                             onClick={() => setShowDelivery(true)}
-                            className="w-full py-3.5 rounded-2xl border border-white/10 text-gray-400 text-sm font-bold hover:border-paninos-yellow/30 hover:text-paninos-yellow transition-all flex items-center justify-center gap-2"
+                            className="w-full group relative bg-[#252525] hover:bg-[#2E2E2E] border border-white/5 hover:border-paninos-yellow/50 rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-paninos-yellow/10"
                         >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            Prefiero pedir a domicilio
+                            <div className="flex items-center gap-4">
+                                {/* Ícono repartidor */}
+                                <div className="w-12 h-12 rounded-xl bg-paninos-yellow/10 border border-paninos-yellow/20 flex items-center justify-center flex-shrink-0 group-hover:bg-paninos-yellow/20 transition-colors">
+                                    <svg className="w-6 h-6 text-paninos-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+                                        {/* Casco */}
+                                        <path d="M12 4C9 4 6.5 6 6 9H18C17.5 6 15 4 12 4Z" />
+                                        <path d="M6 9H18V11C18 14.31 15.31 17 12 17C8.69 17 6 14.31 6 11V9Z" />
+                                        {/* Cuerpo / moto */}
+                                        <path d="M5 17h14" />
+                                        <path d="M4 20h3" />
+                                        <path d="M17 20h3" />
+                                        <circle cx="6" cy="20" r="1.5" />
+                                        <circle cx="18" cy="20" r="1.5" />
+                                        {/* Caja de entrega */}
+                                        <rect x="9" y="12" width="6" height="4" rx="1" />
+                                    </svg>
+                                </div>
+
+                                {/* Texto */}
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-display font-bold text-lg text-white group-hover:text-paninos-yellow transition-colors leading-tight">
+                                        Pedir a Domicilio
+                                    </h3>
+                                    <p className="text-xs text-gray-500 mt-0.5">
+                                        Te lo llevamos a tu dirección en Cali
+                                    </p>
+                                </div>
+
+                                {/* Arrow */}
+                                <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <svg className="w-5 h-5 text-paninos-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </div>
+                            </div>
                         </button>
                     </div>
                 </div>

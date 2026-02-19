@@ -136,6 +136,8 @@ export default function Checkout() {
             const response = { data: { id: `PAN-${Date.now()}` } };
 
             const orderId = response.data.id;
+            // Persistir el pedido para el botón "Pedidos" del home
+            try { localStorage.setItem('paninos_last_order', orderId); } catch { /* noop */ }
             clearCart();
             router.push(`/confirmacion?order=${orderId}&name=${encodeURIComponent(formData.customerName)}&location=${encodeURIComponent(location?.name || '')}&payment=${paymentMethod}`);
 
