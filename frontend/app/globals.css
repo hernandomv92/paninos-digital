@@ -11,10 +11,31 @@
 
   --font-oswald: var(--font-oswald), sans-serif;
   --font-roboto: var(--font-roboto), sans-serif;
+
   --font-lora: var(--font-lora), serif;
 
-  --font-sans: var(--font-roboto), ui-sans-serif, system-ui;
-  --font-display: var(--font-oswald), ui-sans-serif, system-ui;
+  --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;
+  --animate-delay-100: 100ms;
+  --animate-delay-200: 200ms;
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  --font-sans: var(--font-roboto),
+  ui-sans-serif,
+  system-ui;
+  --font-display: var(--font-oswald),
+  ui-sans-serif,
+  system-ui;
 }
 
 body {
