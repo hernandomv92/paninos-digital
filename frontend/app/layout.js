@@ -1,6 +1,7 @@
 
 import { Oswald, Roboto, Lora } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -31,7 +32,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <body className={`${oswald.variable} ${roboto.variable} ${lora.variable} font-sans antialiased bg-[#121212] text-white`}>
-        {children}
+        <CartProvider>
+          {children}
+        </CartProvider>
       </body>
     </html>
   );

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import api from '@/lib/api';
+import LocationSelector from '@/components/LocationSelector';
 
 // Image mapping for products
 const PRODUCT_IMAGES = {
@@ -29,7 +30,6 @@ const getProductImage = (product) => {
     if (product.image_url) return product.image_url;
     return null;
 };
-
 
 // Promotions Data
 const PROMOS = [
@@ -69,19 +69,20 @@ export default function Home() {
     const router = useRouter();
     const [featuredProducts, setFeaturedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [scrolled, setScrolled] = useState(false);
+
+    // Estado del modal de selección de sede
+    const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
 
     useEffect(() => {
         const fetchFeaturedProducts = async () => {
             try {
                 setLoading(true);
                 const response = await api.get('menu/');
-
-                // Get first 3 sandwiches as featured
                 const allProducts = response.data.flatMap(category => category.products);
                 const sandwiches = allProducts.filter(product =>
                     product.name.toUpperCase().startsWith('SAND') && product.is_available
                 );
-
                 setFeaturedProducts(sandwiches.slice(0, 3));
             } catch (err) {
                 console.error('Error fetching products:', err);
@@ -89,41 +90,43 @@ export default function Home() {
                 setLoading(false);
             }
         };
-
         fetchFeaturedProducts();
     }, []);
 
-
-    // Scroll state for sticky header
-    const [scrolled, setScrolled] = useState(false);
-
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
+        const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // ── Handlers ──────────────────────────────────────────────────────────────
     const handleStorePickup = () => {
-        router.push('/menu');
+        // Abre el selector de sede en lugar de ir directamente al menú
+        setIsLocationSelectorOpen(true);
     };
 
     const handleDelivery = () => {
-        router.push('/menu');
+        // TODO Sprint 2: abrir flujo de domicilio (validación de dirección)
+        // Por ahora, ir al menú directamente
+        router.push('/menu?type=delivery');
     };
 
     const handleContactB2B = () => {
         window.open('https://wa.me/573137258091?text=Hola!%20Me%20interesa%20información%20sobre%20catering%20corporativo', '_blank');
     };
 
-
     return (
         <div className="min-h-screen bg-black text-white font-sans pb-20">
+
+            {/* Modal de selección de sede */}
+            <LocationSelector
+                isOpen={isLocationSelectorOpen}
+                onClose={() => setIsLocationSelectorOpen(false)}
+            />
+
             {/* Transparent Sticky Header */}
             <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-paninos-yellow/70 backdrop-blur-md py-2 shadow-lg' : 'bg-transparent py-4 ml-6'}`}>
                 <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-                    {/* Logo (Smaller on scroll) */}
                     <div className={`transition-all duration-300 ${scrolled ? 'w-20' : 'w-24'}`}>
                         <Image
                             src="/images/logo.png"
@@ -163,7 +166,6 @@ export default function Home() {
                     <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/90"></div>
                 </div>
 
-
                 {/* Hero Content */}
                 <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-10 md:mt-0">
                     <h1 className="font-lora italic text-paninos-yellow text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up leading-tight drop-shadow-lg">
@@ -172,16 +174,25 @@ export default function Home() {
 
                     {/* Main CTAs */}
                     <div className="flex flex-col md:flex-row gap-4 justify-center items-center animate-fade-in-up delay-200">
+                        {/* RECOGER EN TIENDA → abre LocationSelector */}
                         <button
                             onClick={handleStorePickup}
-                            className="w-full md:w-auto px-8 py-4 bg-paninos-yellow text-black font-display font-bold text-lg rounded-full hover:scale-105 transition-transform shadow-lg shadow-paninos-yellow/20"
+                            className="w-full md:w-auto px-8 py-4 bg-paninos-yellow text-black font-display font-bold text-lg rounded-full hover:scale-105 transition-transform shadow-lg shadow-paninos-yellow/20 flex items-center justify-center gap-2"
                         >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
                             RECOGER EN TIENDA
                         </button>
+
+                        {/* PEDIR A DOMICILIO */}
                         <button
                             onClick={handleDelivery}
-                            className="w-full md:w-auto px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-display font-bold text-lg rounded-full hover:bg-white/20 transition-all"
+                            className="w-full md:w-auto px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-display font-bold text-lg rounded-full hover:bg-white/20 transition-all flex items-center justify-center gap-2"
                         >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
                             PEDIR A DOMICILIO
                         </button>
                     </div>
@@ -202,7 +213,11 @@ export default function Home() {
                     <div className="max-w-md md:max-w-3xl lg:max-w-6xl xl:max-w-7xl mx-auto">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {PROMOS.map((promo) => (
-                                <div key={promo.id} className="group relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                                <div
+                                    key={promo.id}
+                                    onClick={handleStorePickup}
+                                    className="group relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"
+                                >
                                     {/* Background Image */}
                                     <div className="absolute inset-0">
                                         <img
@@ -276,7 +291,7 @@ export default function Home() {
                             </div>
 
                             <button
-                                onClick={() => router.push('/menu')}
+                                onClick={handleStorePickup}
                                 className="text-paninos-yellow hover:text-white transition-colors font-bold text-sm flex items-center gap-1"
                             >
                                 <span>VER MENÚ COMPLETO</span>
@@ -297,7 +312,8 @@ export default function Home() {
                                     return (
                                         <div
                                             key={product.id}
-                                            className="group bg-[#1A1A1A] rounded-2xl overflow-hidden hover:bg-[#252525] transition-all duration-300"
+                                            onClick={handleStorePickup}
+                                            className="group bg-[#1A1A1A] rounded-2xl overflow-hidden hover:bg-[#252525] transition-all duration-300 cursor-pointer"
                                         >
                                             <div className="flex flex-row md:flex-col h-full">
                                                 {/* Product Image */}
@@ -328,11 +344,11 @@ export default function Home() {
                                                             ${parseFloat(product.price).toLocaleString('es-CO')}
                                                         </span>
 
-                                                        <button className="w-10 h-10 bg-white/10 text-white rounded-full flex items-center justify-center hover:bg-paninos-yellow hover:text-black transition-all duration-300">
+                                                        <div className="w-10 h-10 bg-paninos-yellow/20 text-paninos-yellow rounded-full flex items-center justify-center group-hover:bg-paninos-yellow group-hover:text-black transition-all duration-300">
                                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
                                                             </svg>
-                                                        </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -356,7 +372,7 @@ export default function Home() {
                     </button>
 
                     <button
-                        onClick={() => router.push('/menu')}
+                        onClick={handleStorePickup}
                         className="flex flex-col items-center gap-0.5 px-4 py-2 text-gray-400 hover:text-white transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -365,14 +381,15 @@ export default function Home() {
                         <span className="text-xs font-bold">Menú</span>
                     </button>
 
-                    <button className="flex flex-col items-center gap-0.5 px-4 py-2 text-gray-400 hover:text-white transition-colors">
+                    <button
+                        onClick={handleStorePickup}
+                        className="flex flex-col items-center gap-0.5 px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                    >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
                         <span className="text-xs font-bold">Pedidos</span>
                     </button>
-
-
                 </div>
             </nav>
         </div>
