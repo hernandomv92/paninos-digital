@@ -29,34 +29,35 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
-        
-        # Calculate total
+
+        # Calculate total and build item details (including loggro_id for Loggro invoice)
         total = 0
         order_items_details = []
-        
+
         for item in items_data:
             try:
                 product = Product.objects.get(id=item['product_id'])
-                total += product.price * item['quantity']
+                item_price = float(product.price)
+                item_total = item_price * item['quantity']
+                total += item_total
                 order_items_details.append({
                     'product_id': product.id,
+                    'loggro_id': product.loggro_id,  # Required for Loggro invoice
                     'name': product.name,
-                    'price': float(product.price),
-                    'quantity': item['quantity']
+                    'price': item_price,
+                    'quantity': item['quantity'],
+                    'subtotal': item_total,
                 })
             except Product.DoesNotExist:
-                raise serializers.ValidationError(f"Product with id {item['product_id']} does not exist")
+                raise serializers.ValidationError(
+                    f"Producto con id {item['product_id']} no existe"
+                )
 
-        # Create Order
-        # We store the items details in customer_data for now or we could create a separate OrderItem model.
-        # Given the prompt didn't ask for OrderItem model, I'll store details in customer_data or just assume they are handled.
-        # Actually, the user said "Order (status, total, created_at, customer_data, loggro_order_id)".
-        # I'll append the items to customer_data for record keeping.
-        
+        # Merge items into customer_data (holds all order metadata)
         customer_data = validated_data.get('customer_data', {})
         customer_data['items'] = order_items_details
         validated_data['customer_data'] = customer_data
         validated_data['total'] = total
-        
+
         order = Order.objects.create(**validated_data)
         return order

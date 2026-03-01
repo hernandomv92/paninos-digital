@@ -97,3 +97,6 @@ tmp/
 # Scripts temporales de análisis
 inspect_ingredients.py
 find_ingredients.py
+explore_loggro_api.py
+explore_invoices.py
+test_loggro_order.py

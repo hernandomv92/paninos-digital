@@ -163,34 +163,32 @@ export default function Checkout() {
         setIsSubmitting(true);
 
         try {
+            // Payload completo para el backend Django + Loggro
             const orderPayload = {
-                customer_name: formData.customerName.trim(),
-                customer_phone: formData.customerPhone,
-                notes: formData.notes.trim(),
-                order_type: orderType || 'pickup',
-                location_id: location?.id,
-                payment_method: paymentMethod,
-                // Campos de domicilio
-                delivery_address: isDelivery ? formData.deliveryAddress.trim() : null,
-                delivery_reference: isDelivery ? formData.deliveryReference.trim() : null,
+                customer_data: {
+                    customer_name: formData.customerName.trim(),
+                    customer_phone: formData.customerPhone,
+                    notes: formData.notes.trim(),
+                    order_type: orderType || 'pickup',
+                    location_id: location?.id,
+                    location_name: location?.name,
+                    payment_method: paymentMethod,
+                    delivery_address: isDelivery ? formData.deliveryAddress.trim() : null,
+                    delivery_reference: isDelivery ? formData.deliveryReference.trim() : null,
+                    delivery_fee: isDelivery ? DELIVERY_FEE : 0,
+                    total: grandTotal,
+                },
                 items: items.map(({ product, quantity }) => ({
                     product_id: product.id,
-                    product_name: product.name,
                     quantity,
-                    unit_price: product.price,
                 })),
-                total: grandTotal,
-                delivery_fee: isDelivery ? DELIVERY_FEE : 0,
             };
 
-            // TODO: descomentar cuando el endpoint esté listo:
-            // const response = await api.post('orders/', orderPayload);
+            // Llamada real al backend
+            const response = await api.post('orders/', orderPayload);
 
-            // Simulación
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            const response = { data: { id: `PAN-${Date.now()}` } };
-
-            const orderId = response.data.id;
+            // El backend devuelve el ID local + loggro_order_id
+            const orderId = response.data.loggro_order_id || response.data.id || `PAN-${Date.now()}`;
             try { localStorage.setItem('paninos_last_order', orderId); } catch { /* noop */ }
             try { localStorage.setItem('paninos_last_order_total', grandTotal); } catch { /* noop */ }
             clearCart();
@@ -249,8 +247,8 @@ export default function Checkout() {
                     {/* Badge de tipo de pedido */}
                     <div className="ml-auto">
                         <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${isDelivery
-                                ? 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/25'
-                                : 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/20'
+                            ? 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/25'
+                            : 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/20'
                             }`}>
                             {isDelivery ? '🛵 Domicilio' : '🏪 Recogida'}
                         </span>
