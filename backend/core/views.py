@@ -117,19 +117,19 @@ class CreateOrderView(APIView):
         delivery_fee = float(customer.get('delivery_fee', 0))
 
         client = LoggroClient()
-        result = client.create_invoice(
+        result = client.create_order(
             items=loggro_items,
             customer_name=customer.get('customer_name', 'Consumidor'),
             customer_phone=customer.get('customer_phone', '0000000000'),
+            order_type=customer.get('order_type', 'pickup'),
             payment_method=payment_method,
-            total=total,
-            is_delivery=is_delivery,
             delivery_address=customer.get('delivery_address', ''),
-            delivery_cost=delivery_fee,
+            delivery_reference=customer.get('delivery_reference', ''),
+            delivery_fee=float(customer.get('delivery_fee', 0)),
             notes=customer.get('notes', ''),
         )
 
         # Loggro retorna {"message": {}} - no hay un ID explícito de factura
         # Usamos el ID de nuestro sistema como referencia
-        loggro_response_id = result.get('data', {}).get('_id') or result.get('data', {}).get('id')
-        return loggro_response_id or f"LOGGRO-OK-{order.id}"
+        loggro_group_id = result.get('group')
+        return loggro_group_id or f"LOGGRO-OK-{order.id}"
