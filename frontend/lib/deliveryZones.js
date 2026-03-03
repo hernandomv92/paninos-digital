@@ -490,14 +490,14 @@ export function getNeighborhoodSuggestions(query, limit = 8) {
 
 export const COVERAGE_ZONES_DISPLAY = [
     {
-        sede: 'Sede Libertadores',
-        slug: 'libertadores',
+        sede: 'Sede Oeste',
+        slug: 'oeste',
         count: COBERTURA_LIBERTADORES.size,
         destacados: ['Granada', 'Santa Mónica', 'San Antonio', 'La Alameda', 'Guayaquil', 'San Fernando', 'Chipichape'],
     },
     {
-        sede: 'Sede Caldas',
-        slug: 'caldas',
+        sede: 'Sede Sur',
+        slug: 'sur',
         count: COBERTURA_CALDAS.size,
         destacados: ['Caldas', 'Ciudad Jardín', 'Valle del Lili', 'El Caney', 'Ciudad 2000', 'Meléndez', 'Unicentro'],
     },
