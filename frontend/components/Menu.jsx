@@ -22,34 +22,20 @@ const PRODUCT_DESCRIPTIONS = {
     'SAND VEGETARIANO': 'Queso doble crema, jamón, tomate en rodajas, lechuga batavia y salsa de ajo.',
 };
 
-// ─── Categorías locales ────────────────────────────────────────────────────────
-const EXTRA_CATEGORIES = [
-    {
-        id: 'bebidas',
-        name: 'Bebidas',
-        isLocal: true,
-        products: [
-            { id: 'b1', name: 'Agua (con o sin gas)', price: '3000', is_available: true, stock: 99 },
-            { id: 'b2', name: 'Gaseosa 400ml', price: '3000', is_available: true, stock: 99 },
-            { id: 'b3', name: 'Jugo del Valle 400ml', price: '3500', is_available: true, stock: 99 },
-            { id: 'b4', name: 'Fuze Tea', price: '3500', is_available: true, stock: 99 },
-            { id: 'b5', name: 'Coca-Cola 1.5L', price: '7500', is_available: true, stock: 99 },
-            { id: 'b6', name: 'Jugo del Valle 1.5L', price: '6500', is_available: true, stock: 99 },
-            { id: 'b7', name: 'Del Valle Caja', price: '6000', is_available: true, stock: 99 },
-            { id: 'b8', name: 'Cerveza Coronita', price: '5000', is_available: true, stock: 99 },
-        ],
-    },
-    {
-        id: 'salsa',
-        name: 'Salsa de Ajo',
-        isLocal: true,
-        products: [
-            { id: 's1', name: 'Adición 3 copas', price: '1500', is_available: true, stock: 99, description: 'Extra de nuestra famosa salsa de ajo casera.' },
-            { id: 's2', name: 'Bolsa de 200 gr', price: '35000', is_available: true, stock: 99, description: 'Para llevar la magia a tu casa.' },
-            { id: 's3', name: 'Bolsa de 1 Kg', price: '10000', is_available: true, stock: 10, description: 'Solo por encargo. Ideal para eventos y reuniones.' },
-        ],
-    },
-];
+// ─── Fallback local para Salsa de Ajo ────────────────────────────────────────
+// Solo se usa si la categoría "Salsas" no llega desde Loggro.
+// Una vez sincronizado el backend, este bloque no debería activarse.
+const SALSAS_FALLBACK = {
+    id: 'salsa-local',
+    name: 'Salsa de Ajo',
+    isLocal: true,
+    products: [
+        { id: 's1', name: 'Adición 3 copas', price: '1500', is_available: true, stock: 99, description: 'Extra de nuestra famosa salsa de ajo casera.' },
+        { id: 's2', name: 'Bolsa de 200 gr', price: '12000', is_available: true, stock: 99, description: 'Para llevar la magia a tu casa.' },
+        { id: 's3', name: 'Bolsa de 1 Kg', price: '50000', is_available: true, stock: 10, description: 'Solo por encargo. Ideal para eventos y reuniones.' },
+    ],
+};
+
 
 // ─── Image Mapping ─────────────────────────────────────────────────────────────
 const PRODUCT_IMAGES = {
@@ -76,11 +62,19 @@ const getDescription = (product) => {
     return PRODUCT_DESCRIPTIONS[product.name?.toUpperCase().trim()] || null;
 };
 
+// ─── Quita el prefijo "SAND " del nombre para mostrarlo limpio en pantalla ─────
+const getDisplayName = (name) => {
+    if (!name) return name;
+    return name.replace(/^SAND\s+/i, '').trim();
+};
+
 // ─── Card horizontal (estilo delivery app) ────────────────────────────────────
 function ProductRow({ product, onAdd, quantity }) {
     const imageUrl = getProductImage(product.name);
     const description = getDescription(product);
     const isAvailable = product.is_available && product.stock > 0;
+    // Nombre visible: sin prefijo "SAND". product.name sigue siendo el original.
+    const displayName = getDisplayName(product.name);
 
     return (
         <div className="flex items-stretch gap-4 bg-[#1A1A1A] rounded-2xl overflow-hidden border border-white/5 hover:border-paninos-yellow/20 transition-all duration-200 group">
@@ -105,7 +99,7 @@ function ProductRow({ product, onAdd, quantity }) {
             {/* Info */}
             <div className="flex flex-col justify-center py-4 pr-4 flex-1 min-w-0">
                 <h3 className="font-display font-bold text-sm text-white uppercase leading-snug group-hover:text-paninos-yellow transition-colors mb-1">
-                    {product.name}
+                    {displayName}
                 </h3>
 
                 {description && (
@@ -178,21 +172,42 @@ export default function Menu() {
                 setLoading(true);
                 const { data } = await api.get('menu/');
 
+                // Mostrar los productos activos y con precio de cada categoría.
+                // El filtrado de categorías operacionales se hace en el backend (sync_menu.py).
+                // Aquí excluimos además productos internos/operacionales por nombre o precio.
+                const EXCLUDED_NAME_PREFIXES = ['prueba', 'combo ', 'domi ', 'salsas 200gr pedido'];
+
                 const apiCategories = data
                     .map(cat => ({
                         ...cat,
                         id: String(cat.id),
                         isLocal: false,
-                        products: cat.products.filter(p => p.name.toUpperCase().startsWith('SAND')),
+                        products: cat.products.filter(p => {
+                            if (!p.name) return false;
+                            if (parseFloat(p.price) <= 0) return false;
+                            if (!p.is_available) return false;
+                            const nameLower = p.name.toLowerCase();
+                            if (EXCLUDED_NAME_PREFIXES.some(prefix => nameLower.startsWith(prefix))) return false;
+                            return true;
+                        }),
                     }))
                     .filter(cat => cat.products.length > 0);
 
-                const combined = [...apiCategories, ...EXTRA_CATEGORIES];
+
+                // Agregar fallback de Salsas solo si la API no la trae
+                const hasSalsas = apiCategories.some(
+                    c => c.name.toLowerCase().includes('salsa')
+                );
+                const combined = hasSalsas
+                    ? apiCategories
+                    : [...apiCategories, SALSAS_FALLBACK];
+
                 setAllCategories(combined);
                 if (combined.length > 0) setActiveTab(combined[0].id);
+
             } catch {
-                setAllCategories(EXTRA_CATEGORIES);
-                setActiveTab(EXTRA_CATEGORIES[0]?.id || null);
+                setAllCategories([SALSAS_FALLBACK]);
+                setActiveTab(SALSAS_FALLBACK.id);
             } finally {
                 setLoading(false);
             }
