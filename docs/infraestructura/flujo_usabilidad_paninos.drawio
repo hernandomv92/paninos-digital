@@ -1,0 +1,78 @@
+<mxfile host="65bd71144e">
+    <diagram id="paninos-ux" name="Flujo de Usabilidad">
+        <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <!-- Sección 1: Navegación Inicial -->
+                <mxCell id="u1" value="CLIENTE ENTRA A paninos.co" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FF9800;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="320" y="20" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2" value="HOME / HERO&#10;Identidad de marca&#10;CTA: Pedir Ahora" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="110" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3" value="MENÚ DIGITAL&#10;Categorías dinámicas&#10;Antojo visual" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="200" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <!-- Sección 2: Carrito y Upsell -->
+                <mxCell id="u4" value="AÑADIR PRODUCTO" style="rhombus;whiteSpace=wrap;html=1;fillColor=#E1F5FE;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="290" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="u5" value="MODAL UPSELL&#10;Sugerencia de Bebida&#10;Aumento de Ticket Promedio" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1F5FE;" vertex="1" parent="1">
+                    <mxGeometry x="500" y="300" width="150" height="60" as="geometry"/>
+                </mxCell>
+                <!-- Sección 3: Checkout -->
+                <mxCell id="u6" value="CHECKOUT / CAJA" style="swimlane;whiteSpace=wrap;html=1;fillColor=#F1F8E9;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="420" width="600" height="340" as="geometry"/>
+                </mxCell>
+                <mxCell id="u7" value="¿Cómo quieres recibirlo?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="u6">
+                    <mxGeometry x="220" y="40" width="160" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="u8" value="DOMICILIO&#10;Ingreso de dirección&#10;Autocomplete Barrio" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="u6">
+                    <mxGeometry x="60" y="140" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="u9" value="RECOGER EN TIENDA&#10;Seleccionar Sede&#10;(Caldas / Lib.)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="u6">
+                    <mxGeometry x="420" y="140" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="u10" value="VALIDAR COBERTURA&#10;Filtro de barrios Cali" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFEB3B;" vertex="1" parent="u6">
+                    <mxGeometry x="60" y="230" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="u11" value="NO COBERTURA&#10;Pantalla info&#10;Link a WhatsApp" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCDD2;" vertex="1" parent="u6">
+                    <mxGeometry x="220" y="240" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <!-- Sección 4: Pago e Integración -->
+                <mxCell id="u12" value="DATOS CLIENTE&#10;Nombre, Tel, Notas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFDE7;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="800" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="u13" value="PAGO CONTRA&#10;ENTREGA / TIENDA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="900" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="u14" value="PAGO ONLINE&#10;(Soporte Bold)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;" vertex="1" parent="1">
+                    <mxGeometry x="480" y="900" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="u15" value="ENVÍO A LOGGRO API&#10;Creación en Comandas&#10;Estado: 'Espera'" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8BBD0;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="340" y="1030" width="160" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="u16" value="CONFIRMACIÓN FINAL&#10;Resumen + WhatsApp" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#C8E6C9;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="320" y="1150" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <!-- Conectores -->
+                <mxCell id="c1" edge="1" parent="1" source="u1" target="u2"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c2" edge="1" parent="1" source="u2" target="u3"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c3" edge="1" parent="1" source="u3" target="u4"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c4" edge="1" parent="1" source="u4" target="u5"><mxGeometry relative="1" as="geometry"><mxPoint as="offset" value="¿Es Sándwich?"/></mxGeometry></mxCell>
+                <mxCell id="c5" edge="1" parent="1" source="u4" target="u6"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c6" edge="1" parent="1" source="u7" target="u8"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c7" edge="1" parent="1" source="u7" target="u9"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c8" edge="1" parent="1" source="u8" target="u10"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c9" edge="1" parent="1" source="u10" target="u11"><mxGeometry relative="1" as="geometry"><mxPoint as="offset" value="No"/></mxGeometry></mxCell>
+                <mxCell id="c10" edge="1" parent="1" source="u10" target="u12"><mxGeometry relative="1" as="geometry"><mxPoint as="offset" value="Sí"/></mxGeometry></mxCell>
+                <mxCell id="c11" edge="1" parent="1" source="u9" target="u12"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c12" edge="1" parent="1" source="u12" target="u13"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c13" edge="1" parent="1" source="u12" target="u14"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c14" edge="1" parent="1" source="u13" target="u15"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="c15" edge="1" parent="1" source="u15" target="u16"><mxGeometry relative="1" as="geometry"/></mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

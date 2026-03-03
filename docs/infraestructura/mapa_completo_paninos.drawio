@@ -1,0 +1,319 @@
+<mxfile host="65bd71144e">
+    <diagram id="paninos-full" name="Mapa Completo Paninos">
+        <mxGraphModel dx="2400" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="1">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- TÍTULO PRINCIPAL                                    -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <mxCell id="title" value="🥪 PANINOS — Mapa Completo del Proyecto" style="text;html=1;fontSize=24;fontStyle=1;align=center;fillColor=none;strokeColor=none;fontColor=#333;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="-80" width="700" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="subtitle" value="Arquitectura · Flujo UX · Conexiones · Infraestructura" style="text;html=1;fontSize=14;align=center;fillColor=none;strokeColor=none;fontColor=#666;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="-40" width="500" height="30" as="geometry"/>
+                </mxCell>
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- CAPA 1: FLUJO DEL USUARIO (UX)                     -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <mxCell id="ux_layer" value="🧑‍💻 CAPA 1: FLUJO DEL USUARIO (UX)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB300;fontStyle=1;fontSize=13;startSize=30;rounded=1;arcSize=8;" vertex="1" parent="1">
+                    <mxGeometry x="0" y="0" width="1200" height="280" as="geometry"/>
+                </mxCell>
+
+                <!-- Homepage -->
+                <mxCell id="ux_home" value="🏠 HOME&#10;paninos.co&#10;Hero + CTA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;fontStyle=0;fontSize=11;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="20" y="50" width="100" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Menú -->
+                <mxCell id="ux_menu" value="📋 MENÚ&#10;Categorías&#10;Productos&#10;Precios" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;fontSize=11;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="160" y="50" width="100" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Carrito -->
+                <mxCell id="ux_cart" value="🛒 CARRITO&#10;Drawer lateral&#10;+/- Cant&#10;Resumen" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontSize=11;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="300" y="50" width="100" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Upsell -->
+                <mxCell id="ux_upsell" value="🥤 UPSELL&#10;Modal Bebidas&#10;↑ Ticket promedio" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontSize=11;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="300" y="160" width="100" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Checkout -->
+                <mxCell id="ux_checkout" value="💳 CHECKOUT&#10;Tipo entrega&#10;Datos cliente&#10;Método pago" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;fontStyle=1;fontSize=11;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="450" y="50" width="110" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Decisión recogida / domicilio -->
+                <mxCell id="ux_decision" value="¿Cómo quieres&#10;recibirlo?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFECB3;strokeColor=#FF8F00;fontSize=10;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="600" y="40" width="110" height="90" as="geometry"/>
+                </mxCell>
+
+                <!-- Pickup -->
+                <mxCell id="ux_pickup" value="🏪 RECOGIDA&#10;Elegir sede&#10;Caldas / Lib." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontSize=11;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="740" y="40" width="100" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- Delivery -->
+                <mxCell id="ux_delivery" value="🛵 DOMICILIO&#10;Dirección&#10;Barrio&#10;Autocomplete" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontSize=11;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="740" y="120" width="100" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Validación cobertura -->
+                <mxCell id="ux_coverage" value="🗺️ ¿Cobertura?&#10;deliveryZones.js&#10;270+ barrios" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;fontSize=10;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="880" y="110" width="110" height="90" as="geometry"/>
+                </mxCell>
+
+                <!-- No cobertura -->
+                <mxCell id="ux_nocov" value="❌ SIN COBERTURA&#10;Pantalla info&#10;Link WhatsApp" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;fontSize=10;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="1040" y="130" width="110" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- Confirmación -->
+                <mxCell id="ux_confirm" value="✅ CONFIRMACIÓN&#10;Resumen pedido&#10;ID Loggro&#10;Link WhatsApp" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCEDC8;strokeColor=#33691E;fontStyle=1;fontSize=11;" vertex="1" parent="ux_layer">
+                    <mxGeometry x="1040" y="40" width="120" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Flechas UX -->
+                <mxCell id="ux_e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="ux_layer" source="ux_home" target="ux_menu"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="ux_layer" source="ux_menu" target="ux_cart"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e2b" value="Si sándwich" style="edgeStyle=orthogonalEdgeStyle;dashed=1;fontColor=#666;fontSize=9;" edge="1" parent="ux_layer" source="ux_cart" target="ux_upsell"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="ux_layer" source="ux_cart" target="ux_checkout"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="ux_layer" source="ux_checkout" target="ux_decision"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e5" value="Recoger" style="edgeStyle=orthogonalEdgeStyle;fontSize=9;fontColor=#388E3C;" edge="1" parent="ux_layer" source="ux_decision" target="ux_pickup"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e6" value="Domicilio" style="edgeStyle=orthogonalEdgeStyle;fontSize=9;fontColor=#388E3C;" edge="1" parent="ux_layer" source="ux_decision" target="ux_delivery"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e7" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="ux_layer" source="ux_delivery" target="ux_coverage"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e8" value="No" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#C62828;fontSize=9;fontColor=#C62828;" edge="1" parent="ux_layer" source="ux_coverage" target="ux_nocov"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="ux_e9" value="Sí" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#2E7D32;fontSize=9;fontColor=#2E7D32;" edge="1" parent="ux_layer" source="ux_coverage" target="ux_confirm"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="935" y="75"/><mxPoint x="1100" y="75"/></Array></mxGeometry></mxCell>
+                <mxCell id="ux_e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="ux_layer" source="ux_pickup" target="ux_confirm"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- CAPA 2: FRONTEND (Componentes Next.js)             -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <mxCell id="fe_layer" value="⚛️ CAPA 2: FRONTEND — Next.js (Contenedor Docker)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontStyle=1;fontSize=13;startSize=30;rounded=1;arcSize=8;" vertex="1" parent="1">
+                    <mxGeometry x="0" y="320" width="1200" height="250" as="geometry"/>
+                </mxCell>
+
+                <!-- Páginas -->
+                <mxCell id="fe_pages_box" value="📄 Páginas (app/)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1565C0;fontSize=11;startSize=25;" vertex="1" parent="fe_layer">
+                    <mxGeometry x="20" y="40" width="380" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_p1" value="page.js&#10;(Home)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E3F2FD;" vertex="1" parent="fe_pages_box">
+                    <mxGeometry x="10" y="30" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_p2" value="menu/&#10;page.js" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E3F2FD;" vertex="1" parent="fe_pages_box">
+                    <mxGeometry x="100" y="30" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_p3" value="checkout/&#10;page.js" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E3F2FD;" vertex="1" parent="fe_pages_box">
+                    <mxGeometry x="190" y="30" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_p4" value="confirmacion/&#10;page.js" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E3F2FD;" vertex="1" parent="fe_pages_box">
+                    <mxGeometry x="280" y="30" width="90" height="40" as="geometry"/>
+                </mxCell>
+
+                <!-- Componentes -->
+                <mxCell id="fe_comp_box" value="🧩 Componentes" style="swimlane;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1565C0;fontSize=11;startSize=25;" vertex="1" parent="fe_layer">
+                    <mxGeometry x="20" y="140" width="700" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_c1" value="Home.jsx" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#E3F2FD;" vertex="1" parent="fe_comp_box">
+                    <mxGeometry x="10" y="32" width="72" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_c2" value="Menu.jsx" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#E3F2FD;" vertex="1" parent="fe_comp_box">
+                    <mxGeometry x="92" y="32" width="72" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_c3" value="CartDrawer&#10;.jsx" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#E3F2FD;" vertex="1" parent="fe_comp_box">
+                    <mxGeometry x="174" y="32" width="72" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_c4" value="Checkout&#10;.jsx" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#FFF9C4;strokeColor=#F9A825;" vertex="1" parent="fe_comp_box">
+                    <mxGeometry x="256" y="32" width="72" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_c5" value="Delivery&#10;Flow.jsx" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#FFF9C4;strokeColor=#F9A825;" vertex="1" parent="fe_comp_box">
+                    <mxGeometry x="338" y="32" width="72" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_c6" value="Location&#10;Selector.jsx" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#E3F2FD;" vertex="1" parent="fe_comp_box">
+                    <mxGeometry x="420" y="32" width="72" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_c7" value="Upsell&#10;Drinks.jsx" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#E3F2FD;" vertex="1" parent="fe_comp_box">
+                    <mxGeometry x="502" y="32" width="72" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_c8" value="NoCober&#10;tura.jsx" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#FFCDD2;" vertex="1" parent="fe_comp_box">
+                    <mxGeometry x="584" y="32" width="72" height="44" as="geometry"/>
+                </mxCell>
+
+                <!-- Lib y Context -->
+                <mxCell id="fe_lib_box" value="📚 lib/ y context/" style="swimlane;whiteSpace=wrap;html=1;fillColor=#C5CAE9;strokeColor=#283593;fontSize=11;startSize=25;" vertex="1" parent="fe_layer">
+                    <mxGeometry x="740" y="40" width="440" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_l1" value="api.js&#10;Axios → Backend&#10;baseURL confg" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E8EAF6;" vertex="1" parent="fe_lib_box">
+                    <mxGeometry x="15" y="35" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_l2" value="deliveryZones.js&#10;270+ barrios Cali&#10;Cobertura Caldas&#10;Cobertura Libertadores&#10;findCoverage()" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E8EAF6;" vertex="1" parent="fe_lib_box">
+                    <mxGeometry x="150" y="35" width="130" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_l3" value="locations.js&#10;2 sedes:&#10;• Caldas&#10;• Libertadores&#10;Horarios, coords, WA" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E8EAF6;" vertex="1" parent="fe_lib_box">
+                    <mxGeometry x="295" y="35" width="130" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_l4" value="CartContext.jsx&#10;Estado global carrito&#10;add/remove/clear&#10;localStorage" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#D1C4E9;strokeColor=#4527A0;" vertex="1" parent="fe_lib_box">
+                    <mxGeometry x="80" y="125" width="130" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_env" value=".env.local&#10;NEXT_PUBLIC_API_URL" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#FFF3E0;strokeColor=#E65100;fontStyle=2;" vertex="1" parent="fe_lib_box">
+                    <mxGeometry x="235" y="130" width="130" height="45" as="geometry"/>
+                </mxCell>
+
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- CAPA 3: BACKEND (Django DRF)                       -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <mxCell id="be_layer" value="🐍 CAPA 3: BACKEND — Django REST Framework (Contenedor Docker)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#7B1FA2;fontStyle=1;fontSize=13;startSize=30;rounded=1;arcSize=8;" vertex="1" parent="1">
+                    <mxGeometry x="0" y="610" width="1200" height="230" as="geometry"/>
+                </mxCell>
+
+                <!-- URLs / Endpoints -->
+                <mxCell id="be_urls" value="🔗 Endpoints API (urls.py)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=11;startSize=25;" vertex="1" parent="be_layer">
+                    <mxGeometry x="20" y="40" width="340" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_url1" value="GET /api/health/" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#F3E5F5;" vertex="1" parent="be_urls">
+                    <mxGeometry x="10" y="32" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_url2" value="GET /api/menu/" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#F3E5F5;" vertex="1" parent="be_urls">
+                    <mxGeometry x="115" y="32" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_url3" value="POST /api/orders/" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#CE93D8;fontStyle=1;" vertex="1" parent="be_urls">
+                    <mxGeometry x="220" y="32" width="105" height="35" as="geometry"/>
+                </mxCell>
+
+                <!-- Views -->
+                <mxCell id="be_views" value="👁️ Views (views.py)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=11;startSize=25;" vertex="1" parent="be_layer">
+                    <mxGeometry x="20" y="140" width="340" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_v1" value="MenuListView&#10;Trae productos + categorías Loggro" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#F3E5F5;" vertex="1" parent="be_views">
+                    <mxGeometry x="10" y="28" width="150" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_v2" value="CreateOrderView&#10;Guarda local + Envía a Loggro" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#CE93D8;fontStyle=1;" vertex="1" parent="be_views">
+                    <mxGeometry x="170" y="28" width="160" height="35" as="geometry"/>
+                </mxCell>
+
+                <!-- Models -->
+                <mxCell id="be_models" value="🗃️ Models (models.py)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=11;startSize=25;" vertex="1" parent="be_layer">
+                    <mxGeometry x="400" y="40" width="280" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_m1" value="Category&#10;id, name, loggro_id" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;fillColor=#F3E5F5;" vertex="1" parent="be_models">
+                    <mxGeometry x="10" y="30" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_m2" value="Product&#10;id, name, price,&#10;loggro_id, category_id,&#10;image_url" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;fillColor=#F3E5F5;" vertex="1" parent="be_models">
+                    <mxGeometry x="140" y="30" width="120" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_m3" value="Order&#10;id, status, total,&#10;customer_data (JSON),&#10;loggro_order_id,&#10;created_at" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;fillColor=#CE93D8;fontStyle=1;" vertex="1" parent="be_models">
+                    <mxGeometry x="10" y="80" width="120" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_m4" value="OrderItem&#10;order_id, product_id,&#10;quantity, price" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;fillColor=#F3E5F5;" vertex="1" parent="be_models">
+                    <mxGeometry x="140" y="95" width="120" height="55" as="geometry"/>
+                </mxCell>
+
+                <!-- LoggroClient -->
+                <mxCell id="be_loggro" value="🔌 LoggroClient (loggro_client.py)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E65100;fontSize=11;startSize=25;fontStyle=1;" vertex="1" parent="be_layer">
+                    <mxGeometry x="720" y="40" width="460" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_lg1" value="_login()&#10;POST /login&#10;→ tokenCurrent" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#FFF3E0;" vertex="1" parent="be_loggro">
+                    <mxGeometry x="10" y="30" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_lg2" value="get_products()&#10;GET /products&#10;→ lista con _id" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#FFF3E0;" vertex="1" parent="be_loggro">
+                    <mxGeometry x="120" y="30" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_lg3" value="create_order()&#10;POST /orders&#10;→ 200 OK&#10;Estado: Espera" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#FFCC80;fontStyle=1;strokeColor=#E65100;" vertex="1" parent="be_loggro">
+                    <mxGeometry x="230" y="30" width="110" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_lg_ids" value="IDs fijos del negocio:&#10;Mesa Caja: 6769a9bd...&#10;LocationStock: 6769a9bc...&#10;Cajero: 67872da9..." style="text;whiteSpace=wrap;html=1;fontSize=9;fontColor=#666;fillColor=#FFF8E1;rounded=1;" vertex="1" parent="be_loggro">
+                    <mxGeometry x="10" y="95" width="180" height="65" as="geometry"/>
+                </mxCell>
+                <mxCell id="be_lg_flow" value="Formato groupName:&#10;[WEB RECOGIDA] Juan - 300123&#10;[WEB DOMICILIO] Ana - 310456&#10;&#10;Dir + notas → campo 'notes' del item" style="text;whiteSpace=wrap;html=1;fontSize=9;fontColor=#666;fillColor=#FFF8E1;rounded=1;" vertex="1" parent="be_loggro">
+                    <mxGeometry x="200" y="95" width="240" height="65" as="geometry"/>
+                </mxCell>
+                <!-- Serializers -->
+                <mxCell id="be_serial" value="Serializers&#10;OrderSerializer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;fillColor=#E1BEE7;" vertex="1" parent="be_loggro">
+                    <mxGeometry x="350" y="35" width="90" height="40" as="geometry"/>
+                </mxCell>
+
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- CAPA 4: INFRAESTRUCTURA                            -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <mxCell id="infra_layer" value="🏗️ CAPA 4: INFRAESTRUCTURA Y SERVICIOS EXTERNOS" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ECEFF1;strokeColor=#455A64;fontStyle=1;fontSize=13;startSize=30;rounded=1;arcSize=8;" vertex="1" parent="1">
+                    <mxGeometry x="0" y="880" width="1200" height="220" as="geometry"/>
+                </mxCell>
+
+                <!-- VPS -->
+                <mxCell id="inf_vps" value="🖥️ VPS&#10;srv1013926&#10;/opt/paninos/&#10;paninos-digital/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CFD8DC;strokeColor=#455A64;fontSize=10;" vertex="1" parent="infra_layer">
+                    <mxGeometry x="20" y="50" width="110" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Docker -->
+                <mxCell id="inf_docker" value="🐳 Docker Compose&#10;docker-compose.prod.yml&#10;2 contenedores:&#10;paninos_backend&#10;paninos_frontend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B3E5FC;strokeColor=#0277BD;fontSize=10;" vertex="1" parent="infra_layer">
+                    <mxGeometry x="160" y="40" width="150" height="90" as="geometry"/>
+                </mxCell>
+
+                <!-- Traefik -->
+                <mxCell id="inf_traefik" value="🔒 Traefik&#10;Reverse Proxy&#10;SSL / Let's Encrypt&#10;paninos.co&#10;api.paninos.co" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B2EBF2;strokeColor=#00838F;fontSize=10;fontStyle=1;" vertex="1" parent="infra_layer">
+                    <mxGeometry x="340" y="40" width="130" height="90" as="geometry"/>
+                </mxCell>
+
+                <!-- GitHub -->
+                <mxCell id="inf_github" value="🐙 GitHub&#10;hernandomv92/&#10;paninos-digital&#10;CI: git push → pull" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CFD8DC;strokeColor=#263238;fontSize=10;" vertex="1" parent="infra_layer">
+                    <mxGeometry x="160" y="145" width="130" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- Supabase -->
+                <mxCell id="inf_supa" value="🐘 Supabase&#10;PostgreSQL&#10;Productos + Ordenes&#10;Hosted DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=10;" vertex="1" parent="infra_layer">
+                    <mxGeometry x="510" y="40" width="120" height="80" as="geometry"/>
+                </mxCell>
+
+                <!-- Loggro POS -->
+                <mxCell id="inf_loggro" value="💼 LOGGRO POS&#10;api.pirpos.com&#10;POS del restaurante&#10;Login: Viviana" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#F8BBD0;strokeColor=#AD1457;fontSize=10;fontStyle=1;" vertex="1" parent="infra_layer">
+                    <mxGeometry x="670" y="35" width="170" height="95" as="geometry"/>
+                </mxCell>
+
+                <!-- Loggro Cocina -->
+                <mxCell id="inf_cocina" value="👨‍🍳 COCINA&#10;Pantalla Digital&#10;Comandas&#10;Estado: Espera" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F48FB1;strokeColor=#AD1457;fontSize=10;fontStyle=1;" vertex="1" parent="infra_layer">
+                    <mxGeometry x="880" y="40" width="110" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- WhatsApp -->
+                <mxCell id="inf_wa" value="📱 WhatsApp&#10;Contacto directo&#10;3 sede Caldas&#10;3 sede Libertadores" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=10;" vertex="1" parent="infra_layer">
+                    <mxGeometry x="1030" y="40" width="130" height="70" as="geometry"/>
+                </mxCell>
+
+                <!-- Flechas infra -->
+                <mxCell id="inf_e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="infra_layer" source="inf_vps" target="inf_docker"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="inf_e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="infra_layer" source="inf_docker" target="inf_traefik"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="inf_e3" value="DB" style="edgeStyle=orthogonalEdgeStyle;fontSize=9;" edge="1" parent="infra_layer" source="inf_docker" target="inf_supa"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="inf_e4" value="POST /orders" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#AD1457;fontColor=#AD1457;fontSize=9;fontStyle=1;" edge="1" parent="infra_layer" source="inf_docker" target="inf_loggro"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="inf_e5" value="WebSocket" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#AD1457;dashed=1;fontSize=9;fontColor=#AD1457;" edge="1" parent="infra_layer" source="inf_loggro" target="inf_cocina"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- CONEXIONES ENTRE CAPAS                             -->
+                <!-- ═══════════════════════════════════════════════════ -->
+
+                <!-- UX→Frontend -->
+                <mxCell id="cross1" value="Renderiza" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#1565C0;dashed=1;fontSize=9;fontColor=#1565C0;" edge="1" parent="1" source="ux_home" target="fe_p1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+                <!-- Frontend→Backend: api.js envía a orders -->
+                <mxCell id="cross2" value="POST /api/orders/" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#7B1FA2;fontSize=10;fontStyle=1;fontColor=#7B1FA2;" edge="1" parent="1" source="fe_l1" target="be_url3"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+                <!-- Frontend→Backend: menu -->
+                <mxCell id="cross3" value="GET /api/menu/" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#7B1FA2;fontSize=9;fontColor=#7B1FA2;dashed=1;" edge="1" parent="1" source="fe_l1" target="be_url2"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+                <!-- Backend→Infra: models to supabase -->
+                <mxCell id="cross4" value="Django ORM" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#2E7D32;fontSize=9;fontColor=#2E7D32;" edge="1" parent="1" source="be_m3" target="inf_supa"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+                <!-- Backend→Infra: loggro client to loggro api -->
+                <mxCell id="cross5" value="create_order()" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#E65100;fontSize=10;fontStyle=1;fontColor=#E65100;" edge="1" parent="1" source="be_lg3" target="inf_loggro"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

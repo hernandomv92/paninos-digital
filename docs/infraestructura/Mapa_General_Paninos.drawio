@@ -1,0 +1,160 @@
+<mxfile version="22.1.2" host="Electron">
+    <diagram id="paninos_master" name="Mapa Paninos Master">
+        <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                
+                <!-- Fondo Global -->
+                <mxCell id="bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#dee2e6;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="20" width="1560" height="1140" as="geometry"/>
+                </mxCell>
+
+                <!-- Titulo -->
+                <mxCell id="title" value="🥪 PANINOS — Ecosistema Digital Completo" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=28;fontStyle=1;fontColor=#343a40;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="40" width="800" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- ================== CAPA 1: UX / CLIENTE ================== -->
+                <mxCell id="grp_ux" value="1. EXPERIENCIA DE USUARIO (Frontend View)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ff9800;fontStyle=1;fontSize=14;startSize=30;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="120" width="1480" height="240" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="ux_1" value="🏠 Inicio (Home)&#10;Presentación y&#10;Banner Principal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcc80;strokeColor=#e65100;fontSize=12;" vertex="1" parent="grp_ux">
+                    <mxGeometry x="40" y="80" width="140" height="80" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="ux_2" value="📋 Menú Dinámico&#10;Productos de DB&#10;con imágenes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcc80;strokeColor=#e65100;fontSize=12;" vertex="1" parent="grp_ux">
+                    <mxGeometry x="240" y="80" width="140" height="80" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="ux_3" value="🛒 Carrito (Drawer)&#10;Gestión de items y&#10;Upsell (bebidas)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcc80;strokeColor=#e65100;fontSize=12;" vertex="1" parent="grp_ux">
+                    <mxGeometry x="440" y="80" width="140" height="80" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="ux_4" value="💳 Checkout&#10;¿Recoger o Domicilio?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontSize=12;" vertex="1" parent="grp_ux">
+                    <mxGeometry x="640" y="70" width="160" height="100" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="ux_5_a" value="🛵 Domicilios&#10;Validar cobertura&#10;(deliveryZones.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcc80;strokeColor=#e65100;fontSize=12;" vertex="1" parent="grp_ux">
+                    <mxGeometry x="860" y="40" width="140" height="70" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="ux_5_b" value="🏪 Recoger&#10;Tienda Caldas/Lib." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcc80;strokeColor=#e65100;fontSize=12;" vertex="1" parent="grp_ux">
+                    <mxGeometry x="860" y="140" width="140" height="70" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="ux_6" value="✅ Confirmación&#10;Resumen + API Call&#10;Botón WhatsApp" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;fontSize=12;fontStyle=1" vertex="1" parent="grp_ux">
+                    <mxGeometry x="1080" y="80" width="140" height="80" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="ux_error" value="❌ Sin Cobertura&#10;Asistencia WA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#c62828;fontSize=12;" vertex="1" parent="grp_ux">
+                    <mxGeometry x="1080" y="180" width="140" height="50" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="grp_ux" source="ux_1" target="ux_2"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="grp_ux" source="ux_2" target="ux_3"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="grp_ux" source="ux_3" target="ux_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="grp_ux" source="ux_4" target="ux_5_a"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="830" y="75"/></Array></mxGeometry></mxCell>
+                <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="grp_ux" source="ux_4" target="ux_5_b"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="830" y="175"/></Array></mxGeometry></mxCell>
+                <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="grp_ux" source="ux_5_a" target="ux_6"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1040" y="75"/><mxPoint x="1040" y="120"/></Array></mxGeometry></mxCell>
+                <mxCell id="e6b" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#c62828;" edge="1" parent="grp_ux" source="ux_5_a" target="ux_error"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1040" y="75"/><mxPoint x="1040" y="205"/></Array></mxGeometry></mxCell>
+                <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="grp_ux" source="ux_5_b" target="ux_6"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1040" y="175"/><mxPoint x="1040" y="120"/></Array></mxGeometry></mxCell>
+
+                <!-- ================== CAPA 2: CODIGO FRONTEND ================== -->
+                <mxCell id="grp_fe" value="2. LOGICA FRONTEND (React / Next.js)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;fontStyle=1;fontSize=14;startSize=30;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="380" width="720" height="320" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="fe_1" value="CartContext.jsx&#10;(Estado Global del carrito)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1565c0;" vertex="1" parent="grp_fe">
+                    <mxGeometry x="40" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_2" value="deliveryZones.js&#10;Lógica de ~270 barrios&#10;y restricciones por sede" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1565c0;" vertex="1" parent="grp_fe">
+                    <mxGeometry x="260" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="fe_3" value="locations.js&#10;Data de sedes Caldas y Lib.&#10;Horarios: 12pm - 10:30pm" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1565c0;" vertex="1" parent="grp_fe">
+                    <mxGeometry x="480" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="fe_4" value="Componentes Clave&#10;Home, Checkout, NoCobertura&#10;UpsellDrinks, CartDrawer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90caf9;strokeColor=#0d47a1;" vertex="1" parent="grp_fe">
+                    <mxGeometry x="40" y="160" width="400" height="60" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="fe_5" value="api.js (Axios)&#10;Conecta Front-&gt;Back" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#64b5f6;strokeColor=#0d47a1;fontStyle=1" vertex="1" parent="grp_fe">
+                    <mxGeometry x="490" y="240" width="180" height="50" as="geometry"/>
+                </mxCell>
+
+                <!-- ================== CAPA 3: BACKEND ================== -->
+                <mxCell id="grp_be" value="3. LOGICA BACKEND (Django REST Framework)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;fontStyle=1;fontSize=14;startSize=30;" vertex="1" parent="1">
+                    <mxGeometry x="820" y="380" width="720" height="320" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="be_1" value="Endpoints (urls.py)&#10;GET /api/menu/&#10;POST /api/orders/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#7b1fa2;" vertex="1" parent="grp_be">
+                    <mxGeometry x="40" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="be_2" value="Views (views.py)&#10;Procesa datos del cliente&#10;Valida stock, precios" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#7b1fa2;" vertex="1" parent="grp_be">
+                    <mxGeometry x="260" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="be_3" value="Modelos (models.py)&#10;Product, Order, OrderItem&#10;Base de datos transaccional" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#7b1fa2;" vertex="1" parent="grp_be">
+                    <mxGeometry x="480" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="be_4" value="LoggroClient (SERVICES)&#10;El cerebro de integración.&#10;Traduce la orden de Paninos&#10;al idioma del API Logic" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#4a148c;fontStyle=1" vertex="1" parent="grp_be">
+                    <mxGeometry x="160" y="220" width="400" height="60" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="cross_api" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#FF5722;strokeWidth=2;" edge="1" parent="1" source="fe_5" target="be_1">
+                    <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="800" y="645"/><mxPoint x="800" y="470"/></Array></mxGeometry>
+                </mxCell>
+
+                <mxCell id="be_e1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#9c27b0;" edge="1" parent="grp_be" source="be_1" target="be_2"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="be_e2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#9c27b0;" edge="1" parent="grp_be" source="be_2" target="be_3"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="be_e3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#9c27b0;" edge="1" parent="grp_be" source="be_2" target="be_4"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="350" y="160"/><mxPoint x="360" y="160"/></Array></mxGeometry></mxCell>
+
+
+                <!-- ================== CAPA 4: INFRAESTRUCTURA Y SERVICIOS ================== -->
+                <mxCell id="grp_inf" value="4. INFRAESTRUCTURA Y SERVICIOS (Deployment)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#eceff1;strokeColor=#455a64;fontStyle=1;fontSize=14;startSize=30;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="740" width="1480" height="380" as="geometry"/>
+                </mxCell>
+
+                <!-- Database -->
+                <mxCell id="inf_1" value="Base de Datos&#10;Supabase (PostgreSQL)&#10;Guarda copia de todo" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#c8e6c9;strokeColor=#388e3c;" vertex="1" parent="grp_inf">
+                    <mxGeometry x="300" y="60" width="140" height="120" as="geometry"/>
+                </mxCell>
+
+                <!-- Docker/Traefik -->
+                <mxCell id="inf_2" value="VPS Host (Docker)&#10;Contenedores: front &amp; back&#10;Traefik: Enrutador y SSL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cfd8dc;strokeColor=#455a64;" vertex="1" parent="grp_inf">
+                    <mxGeometry x="40" y="70" width="220" height="100" as="geometry"/>
+                </mxCell>
+
+                <!-- Pirpos API -->
+                <mxCell id="inf_3" value="API LOGGRO&#10;api.pirpos.com&#10;Recibe POST /orders" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#f8bbd0;strokeColor=#c2185b;fontStyle=1" vertex="1" parent="grp_inf">
+                    <mxGeometry x="780" y="60" width="220" height="130" as="geometry"/>
+                </mxCell>
+
+                <!-- Cocina -->
+                <mxCell id="inf_4" value="👨‍🍳 COCINA DE PANINOS&#10;&#10;Panel de Comandas Loggro&#10;Estado de Ingreso: 'Espera'&#10;[WEB DOMICILIO] Nombre - Tel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ff8a65;strokeColor=#d84315;fontSize=14;fontColor=#ffffff;fontStyle=1" vertex="1" parent="grp_inf">
+                    <mxGeometry x="1150" y="70" width="260" height="110" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="db_link" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#2e7d32;strokeWidth=2;" edge="1" parent="1" source="be_3" target="inf_1">
+                    <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1390" y="470"/><mxPoint x="1390" y="720"/><mxPoint x="430" y="720"/></Array></mxGeometry>
+                </mxCell>
+
+                <mxCell id="api_link" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#c2185b;strokeWidth=3;" edge="1" parent="1" source="be_4" target="inf_3">
+                    <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1180" y="640"/><mxPoint x="1180" y="865"/></Array></mxGeometry>
+                </mxCell>
+
+                <mxCell id="cocina_link" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d84315;strokeWidth=4;" edge="1" parent="grp_inf" source="inf_3" target="inf_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+                <!-- Detalles adicionales Inf -->
+                <mxCell id="inf_det" value="El sistema envía: ID Mesa (Caja), ID Inventario, ID Vendedor y notas extraídas del front" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontColor=#666666;" vertex="1" parent="grp_inf">
+                    <mxGeometry x="770" y="200" width="550" height="30" as="geometry"/>
+                </mxCell>
+
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

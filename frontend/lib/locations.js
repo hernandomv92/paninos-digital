@@ -6,8 +6,8 @@
 export const LOCATIONS = [
     {
         id: 1,
-        slug: 'caldas',
-        name: 'Sede Caldas',
+        slug: 'sur',
+        name: 'Sede Sur',
         address: 'Calle 3 # 68-48',
         neighborhood: 'Barrio Caldas',
         city: 'Cali, Valle del Cauca',
@@ -21,8 +21,8 @@ export const LOCATIONS = [
     },
     {
         id: 2,
-        slug: 'libertadores',
-        name: 'Sede Libertadores',
+        slug: 'oeste',
+        name: 'Sede Oeste',
         address: 'Cra 22 #2b-05',
         neighborhood: 'Barrio Libertadores',
         city: 'Cali, Valle del Cauca',
