@@ -67,7 +67,7 @@ class Command(BaseCommand):
         # Categorías que NO deben aparecer en el menú del cliente
         EXCLUDED_CATEGORIES = {
             'Devoluciones', 'Desechables', 'Domicilios', 'Carnes',
-            'Adiciones Paninos', 'Papas Monterojo',
+            'Adiciones Paninos',
         }
         
         try:

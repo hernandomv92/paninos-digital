@@ -67,10 +67,43 @@ export default function DeliveryFlow({ onClose }) {
         }
     };
 
-    const handleSelect = (suggestion) => {
+    const handleSelect = async (suggestion) => {
         setQuery(suggestion.name);
         setShowSuggestions(false);
-        inputRef.current?.focus();
+
+        // Auto-verificar inmediatamente al seleccionar del dropdown
+        setChecking(true);
+        setError('');
+
+        // Pequeño delay para feedback visual
+        await new Promise(r => setTimeout(r, 400));
+
+        if (suggestion.covered && suggestion.sede) {
+            // El dropdown ya sabe que tiene cobertura → navegar directamente
+            const location = getLocationBySlug(suggestion.sede);
+            if (location) {
+                setLocation(location);
+                setOrderType('delivery');
+                router.push(`/menu?location=${suggestion.sede}&type=delivery`);
+                return;
+            }
+        }
+
+        // Sin cobertura o fallback → re-verificar con checkCoverage
+        const result = checkCoverage(suggestion.name);
+        if (result.covered) {
+            const location = getLocationBySlug(result.sede_slug);
+            if (location) {
+                setLocation(location);
+                setOrderType('delivery');
+                router.push(`/menu?location=${result.sede_slug}&type=delivery`);
+                return;
+            }
+        }
+
+        setFailedAddress(suggestion.name);
+        setNoCobertura(true);
+        setChecking(false);
     };
 
     const handleCheck = async (e) => {
@@ -88,6 +121,7 @@ export default function DeliveryFlow({ onClose }) {
 
         setChecking(true);
         setError('');
+        setShowSuggestions(false);
 
         // Pequeño delay para feedback visual
         await new Promise(r => setTimeout(r, 600));
@@ -253,7 +287,7 @@ export default function DeliveryFlow({ onClose }) {
                                         <p className={`text-xs mt-0.5 ${s.covered ? 'text-green-500/70' : 'text-gray-600'
                                             }`}>
                                             {s.covered
-                                                ? (s.sede === 'libertadores' ? 'Sede Libertadores · Con cobertura' : 'Sede Caldas · Con cobertura')
+                                                ? (s.sede === 'oeste' ? 'Sede Oeste · Con cobertura' : 'Sede Sur · Con cobertura')
                                                 : 'Sin cobertura de domicilio'
                                             }
                                         </p>

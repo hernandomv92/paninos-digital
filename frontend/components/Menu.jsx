@@ -37,7 +37,7 @@ const SALSAS_FALLBACK = {
 };
 
 
-// ─── Image Mapping ─────────────────────────────────────────────────────────────
+// ─── Image Mapping — Sandwiches ────────────────────────────────────────────────
 const PRODUCT_IMAGES = {
     'SAND ALOHA': 'SAND ALOHA.JPG',
     'SAND ATUN': 'SAND ATUN.jpg',
@@ -50,11 +50,58 @@ const PRODUCT_IMAGES = {
     'SAND SUPREMO CARNE': 'SAND SUPREMO CARNE.jpg',
     'SAND SUPREMO POLLO': 'SAND SUPREMO POLLO.JPG',
     'SAND VEGETARIANO': 'SAND VEGETARIANO.jpg',
+    'SAND CORDERO': 'SAND CORDERO.JPG',
+    'SAND JAMON Y QUESO': 'SAND JAMON Y QUESO.JPG',
+};
+
+// ─── Image Mapping — Bebidas ────────────────────────────────────────────────────
+const BEBIDA_IMAGES = {
+    'AGUA BRISA CON GAS 600ML': '/images/Bebidas/AGUA BRISA CON GAS 600ML.webp',
+    'AGUA BRISA SABORIZADA 280ML': '/images/Bebidas/AGUA BRISA SABORIZADA 280ML.webp',
+    'AGUA BRISA SIN GAS 600ML': '/images/Bebidas/AGUA BRISA SIN GAS 600ML.webp',
+    'AGUA SABORIZADA 600ML': '/images/Bebidas/AGUA SABORIZADA 600ML.webp',
+    'COCA COLA 500ML': '/images/Bebidas/COCACOLA 500ML.webp',
+    'COCACOLA 500ML': '/images/Bebidas/COCACOLA 500ML.webp',
+    'COCACOLA 1.5LT': '/images/Bebidas/COCACOLA 1.5LT.webp',
+    'COCACOLA 1.5L': '/images/Bebidas/COCACOLA 1.5LT.webp',
+    'COCACOLA 250ML': '/images/Bebidas/COCACOLA 250ML.webp',
+    'COCACOLA 400ML': '/images/Bebidas/COCACOLA 400ML.webp',
+    'COCACOLA ZERO 400ML': '/images/Bebidas/COCACOLA ZERO 400ML.webp',
+    'CORONITA': '/images/Bebidas/CORONITA.webp',
+    'DEL VALLE 1,5L CITRICO': '/images/Bebidas/DEL VALLE 1,5L CITRICO.webp',
+    'DEL VALLE 250ML': '/images/Bebidas/DEL VALLE 250ML.webp',
+    'DEL VALLE CAJA 188ML': '/images/Bebidas/DEL VALLE CAJA 188ML.webp',
+    'DEL VALLE CAJA 946ML': '/images/Bebidas/DEL VALLE CAJA 946ML.webp',
+    'DEL VALLE NARANJA 400ML': '/images/Bebidas/DEL VALLE NARANJA 400ML.webp',
+    'PREMIO 400ML': '/images/Bebidas/PREMIO 400ML.webp',
+    'QUATRO 1.5 L': '/images/Bebidas/QUATRO 1.5 L.webp',
+    'QUATRO 400 ML': '/images/Bebidas/QUATRO 400 ML.webp',
+    'SPRITE 400 ML': '/images/Bebidas/SPRITE 400 ML.webp',
+    'FUZE TEA 400 ML': '/images/Bebidas/fuze tea 400 ML.webp',
+    // Alias por variaciones de nombre en Loggro
+    'AGUA SABORIZADA': '/images/Bebidas/AGUA BRISA SABORIZADA 280ML.webp',
+    'AGUA BRISA': '/images/Bebidas/AGUA BRISA SIN GAS 600ML.webp',
+    'DEL VALLE': '/images/Bebidas/DEL VALLE CAJA 188ML.webp',
+    'COCA COLA': '/images/Bebidas/COCACOLA 500ML.webp',
+    'SPRITE': '/images/Bebidas/SPRITE 400 ML.webp',
+    'QUATRO': '/images/Bebidas/QUATRO 400 ML.webp',
+    'FUZE TEA': '/images/Bebidas/fuze tea 400 ML.webp',
+    'PREMIO': '/images/Bebidas/PREMIO 400ML.webp',
 };
 
 const getProductImage = (name) => {
     const key = name?.toUpperCase().trim();
-    return PRODUCT_IMAGES[key] ? `/images/products/${PRODUCT_IMAGES[key]}` : null;
+    if (!key) return null;
+
+    // 1. Buscar en sandwiches (ruta /images/products/)
+    if (PRODUCT_IMAGES[key]) return `/images/products/${PRODUCT_IMAGES[key]}`;
+
+    // 2. Buscar en bebidas (coincidencia exacta)
+    if (BEBIDA_IMAGES[key]) return BEBIDA_IMAGES[key];
+
+    // 3. Búsqueda parcial en bebidas (tolerante a variaciones menores de nombre)
+    const match = Object.keys(BEBIDA_IMAGES).find(k => key.includes(k) || k.includes(key));
+    return match ? BEBIDA_IMAGES[match] : null;
 };
 
 const getDescription = (product) => {
@@ -66,6 +113,32 @@ const getDescription = (product) => {
 const getDisplayName = (name) => {
     if (!name) return name;
     return name.replace(/^SAND\s+/i, '').trim();
+};
+
+// ─── Orden deseado de categorías en el menú ────────────────────────────────────
+const CATEGORY_ORDER = ['sandwiches', 'adiciones', 'bebidas', 'salsas', 'snacks'];
+
+// Nombre que se muestra en la tab (renombra categorías del backend si es necesario)
+const getCategoryDisplayName = (name) => {
+    if (!name) return name;
+    const n = name.toLowerCase();
+    if (n.includes('papas monterojo')) return 'Snacks';
+    if (n.includes('plátanos') || n.includes('platanos')) return 'Snacks';
+    if (n.includes('adiciones paninos')) return 'Adiciones';
+    return name;
+};
+
+// Ordena las categorías según CATEGORY_ORDER (las no listadas van al final)
+const sortCategories = (cats) => {
+    return [...cats].sort((a, b) => {
+        const na = (a.displayName || a.name || '').toLowerCase();
+        const nb = (b.displayName || b.name || '').toLowerCase();
+        const ia = CATEGORY_ORDER.findIndex(k => na.includes(k));
+        const ib = CATEGORY_ORDER.findIndex(k => nb.includes(k));
+        const orderA = ia === -1 ? 99 : ia;
+        const orderB = ib === -1 ? 99 : ib;
+        return orderA - orderB;
+    });
 };
 
 // ─── Card horizontal (estilo delivery app) ────────────────────────────────────
@@ -108,26 +181,46 @@ function ProductRow({ product, onAdd, quantity }) {
                     </p>
                 )}
 
-                {/* Precio + botón */}
+                {/* Precio + control de cantidad */}
                 <div className="flex items-center justify-between gap-2">
                     <span className="font-display font-bold text-base text-paninos-yellow">
                         ${parseFloat(product.price).toLocaleString('es-CO')}
                     </span>
 
                     {isAvailable ? (
-                        <button
-                            onClick={() => onAdd(product)}
-                            className="w-8 h-8 rounded-full bg-paninos-yellow text-black flex items-center justify-center hover:bg-white hover:scale-110 active:scale-95 transition-all duration-200 shadow-md"
-                            aria-label={`Agregar ${product.name}`}
-                        >
-                            {quantity > 0 ? (
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                                </svg>
-                            ) : (
+                        quantity > 0 ? (
+                            // Control inline - N + cuando ya hay unidades
+                            <div className="flex items-center gap-1.5">
+                                <button
+                                    onClick={() => onAdd(product, -1)}
+                                    className="w-7 h-7 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all duration-150"
+                                    aria-label={`Quitar un ${product.name}`}
+                                >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 12H4" />
+                                    </svg>
+                                </button>
+                                <span className="font-display font-bold text-white text-sm w-5 text-center">{quantity}</span>
+                                <button
+                                    onClick={() => onAdd(product, 1)}
+                                    className="w-7 h-7 rounded-full bg-paninos-yellow text-black flex items-center justify-center hover:bg-white active:scale-90 transition-all duration-150 shadow-md"
+                                    aria-label={`Agregar otro ${product.name}`}
+                                >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </button>
+                            </div>
+                        ) : (
+                            // Botón simple "+" cuando aún no hay cantidad
+                            <button
+                                onClick={() => onAdd(product, 1)}
+                                className="w-8 h-8 rounded-full bg-paninos-yellow text-black flex items-center justify-center hover:bg-white hover:scale-110 active:scale-95 transition-all duration-200 shadow-md"
+                                aria-label={`Agregar ${product.name}`}
+                            >
                                 <span className="text-lg font-bold leading-none">+</span>
-                            )}
-                        </button>
+                            </button>
+                        )
                     ) : (
                         <span className="text-xs text-red-400 font-bold tracking-wide">Agotado</span>
                     )}
@@ -151,7 +244,7 @@ export default function Menu() {
         [locationSlug]
     );
 
-    const { addItem, totalItems, setLocation, setOrderType, getQuantity } = useCart();
+    const { addItem, totalItems, setLocation, setOrderType, getQuantity, updateQuantity, removeItem } = useCart();
 
     const [allCategories, setAllCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -191,16 +284,20 @@ export default function Menu() {
                             return true;
                         }),
                     }))
-                    .filter(cat => cat.products.length > 0);
-
+                    .filter(cat => cat.products.length > 0)
+                    // Añadir nombre de display (renombra Papas Monterojo → Snacks, etc.)
+                    .map(cat => ({ ...cat, displayName: getCategoryDisplayName(cat.name) }));
 
                 // Agregar fallback de Salsas solo si la API no la trae
                 const hasSalsas = apiCategories.some(
                     c => c.name.toLowerCase().includes('salsa')
                 );
-                const combined = hasSalsas
+                const withFallback = hasSalsas
                     ? apiCategories
                     : [...apiCategories, SALSAS_FALLBACK];
+
+                // Ordenar categorías según el orden deseado
+                const combined = sortCategories(withFallback);
 
                 setAllCategories(combined);
                 if (combined.length > 0) setActiveTab(combined[0].id);
@@ -216,10 +313,18 @@ export default function Menu() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentLocation.id]);
 
-    const handleAdd = useCallback((product) => {
-        addItem(product);
+    // onAdd recibe el producto y una delta (+1 / -1)
+    const handleAdd = useCallback((product, delta = 1) => {
+        if (delta > 0) {
+            addItem(product);
+        } else {
+            // Importamos updateQuantity desde CartContext
+            const currentQty = getQuantity(product.id);
+            if (currentQty > 1) updateQuantity(product.id, currentQty - 1);
+            else removeItem(product.id);
+        }
         if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(40);
-    }, [addItem]);
+    }, [addItem, getQuantity, updateQuantity, removeItem]);
 
     const activeCategory = allCategories.find(c => c.id === activeTab);
 
@@ -312,7 +417,7 @@ export default function Menu() {
                                             : 'text-gray-400 hover:text-white border border-white/8 hover:border-white/20'
                                         }`}
                                 >
-                                    {cat.name}
+                                    {cat.displayName || cat.name}
                                 </button>
                             );
                         })}

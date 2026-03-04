@@ -3,13 +3,21 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 
-function DeliveryIcon({ className = 'w-5 h-5' }) {
+function MotoIcon({ className = 'w-5 h-5' }) {
     return (
         <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" />
-            <rect x="9" y="11" width="14" height="10" rx="2" />
-            <circle cx="12" cy="21" r="1" />
-            <circle cx="20" cy="21" r="1" />
+            <path d="M5 17H3a2 2 0 01-2-2v-2a2 2 0 012-2h3l2-4h6l2 2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2" />
+            <circle cx="6" cy="17" r="2" />
+            <circle cx="18" cy="17" r="2" />
+        </svg>
+    );
+}
+
+function StoreIcon({ className = 'w-5 h-5' }) {
+    return (
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            <path d="M9 22V12h6v10" />
         </svg>
     );
 }
@@ -46,7 +54,7 @@ function ConfirmationContent() {
                 desc: 'Recibirás una llamada o mensaje cuando el repartidor esté en camino.',
             },
             {
-                svg: <DeliveryIcon />,
+                svg: <MotoIcon />,
                 title: 'Llegará a tu dirección',
                 desc: 'El repartidor llevará datáfono. Puedes pagar con efectivo o tarjeta.',
             },
@@ -78,11 +86,14 @@ function ConfirmationContent() {
             </div>
 
             {/* Badge de tipo */}
-            <div className={`mb-4 text-xs font-bold px-3 py-1.5 rounded-full ${isDelivery
+            <div className={`mb-4 inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full ${isDelivery
                     ? 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/25'
                     : 'bg-white/5 text-gray-400 border border-white/10'
                 }`}>
-                {isDelivery ? '🛵 Domicilio' : '🏪 Recogida en tienda'}
+                <span className="w-4 h-4 flex items-center justify-center">
+                    {isDelivery ? <MotoIcon className="w-4 h-4" /> : <StoreIcon className="w-4 h-4" />}
+                </span>
+                {isDelivery ? 'Domicilio' : 'Recogida en tienda'}
             </div>
 
             {/* Checkmark animado */}

@@ -6,6 +6,30 @@ import { LOCATIONS } from '@/lib/locations';
 import { useCart } from '@/context/CartContext';
 import DeliveryFlow from './DeliveryFlow';
 
+// ── Íconos SVG reutilizables ───────────────────────────────────────────────────
+function StoreIcon({ className = 'w-6 h-6' }) {
+    return (
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+            {/* Techo / frente */}
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            {/* Puerta */}
+            <path d="M9 22V12h6v10" />
+        </svg>
+    );
+}
+
+// MotoIcon: usa la imagen subida por el usuario, igual estilo que los íconos del sitio
+function MotoIcon({ className = 'w-6 h-6' }) {
+    return (
+        <img
+            src="/images/fast-delivery.webp"
+            alt="Domicilio"
+            className={className}
+            style={{ objectFit: 'contain' }}
+        />
+    );
+}
+
 /**
  * LocationSelector
  * Modal de pantalla completa para que el usuario elija la sede
@@ -115,9 +139,10 @@ export default function LocationSelector({ isOpen, onClose }) {
                                 className="w-full group relative bg-[#252525] hover:bg-[#2E2E2E] border border-white/5 hover:border-paninos-yellow/50 rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-paninos-yellow/10"
                             >
                                 <div className="flex items-start gap-4">
-                                    {/* Icono/Emoji de la sede */}
-                                    <div className="w-12 h-12 rounded-xl bg-paninos-yellow/10 border border-paninos-yellow/20 flex items-center justify-center text-2xl flex-shrink-0 group-hover:bg-paninos-yellow/20 transition-colors">
-                                        {location.emoji}
+                                    {/* Ícono de la sede — SVG con contenedor amarillo */}
+                                    <div className="w-12 h-12 rounded-xl bg-black border border-paninos-yellow/30 flex items-center justify-center flex-shrink-0 group-hover:bg-paninos-yellow/20 transition-colors" style={{ background: 'rgba(0,0,0,0.7)' }}>
+                                        <div className="w-12 h-12 rounded-xl bg-paninos-yellow/10 border border-paninos-yellow/20 absolute flex items-center justify-center group-hover:bg-paninos-yellow/20 transition-colors" />
+                                        <StoreIcon className="w-6 h-6 text-paninos-yellow relative z-10" />
                                     </div>
 
                                     {/* Info de la sede */}
@@ -174,21 +199,10 @@ export default function LocationSelector({ isOpen, onClose }) {
                             className="w-full group relative bg-[#252525] hover:bg-[#2E2E2E] border border-white/5 hover:border-paninos-yellow/50 rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-paninos-yellow/10"
                         >
                             <div className="flex items-center gap-4">
-                                {/* Ícono repartidor */}
-                                <div className="w-12 h-12 rounded-xl bg-paninos-yellow/10 border border-paninos-yellow/20 flex items-center justify-center flex-shrink-0 group-hover:bg-paninos-yellow/20 transition-colors">
-                                    <svg className="w-6 h-6 text-paninos-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
-                                        {/* Casco */}
-                                        <path d="M12 4C9 4 6.5 6 6 9H18C17.5 6 15 4 12 4Z" />
-                                        <path d="M6 9H18V11C18 14.31 15.31 17 12 17C8.69 17 6 14.31 6 11V9Z" />
-                                        {/* Cuerpo / moto */}
-                                        <path d="M5 17h14" />
-                                        <path d="M4 20h3" />
-                                        <path d="M17 20h3" />
-                                        <circle cx="6" cy="20" r="1.5" />
-                                        <circle cx="18" cy="20" r="1.5" />
-                                        {/* Caja de entrega */}
-                                        <rect x="9" y="12" width="6" height="4" rx="1" />
-                                    </svg>
+                                {/* Ícono moto — mismo estilo que las sedes */}
+                                <div className="w-12 h-12 rounded-xl relative flex items-center justify-center flex-shrink-0">
+                                    <div className="absolute inset-0 rounded-xl bg-paninos-yellow/10 border border-paninos-yellow/20 group-hover:bg-paninos-yellow/20 transition-colors" />
+                                    <MotoIcon className="w-6 h-6 text-paninos-yellow relative z-10" />
                                 </div>
 
                                 {/* Texto */}

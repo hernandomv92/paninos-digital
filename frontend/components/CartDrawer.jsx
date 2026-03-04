@@ -17,12 +17,63 @@ const PRODUCT_IMAGES = {
     'SAND SUPREMO CARNE': 'SAND SUPREMO CARNE.jpg',
     'SAND SUPREMO POLLO': 'SAND SUPREMO POLLO.JPG',
     'SAND VEGETARIANO': 'SAND VEGETARIANO.jpg',
+    'SAND CORDERO': 'SAND CORDERO.JPG',
+    'SAND JAMON Y QUESO': 'SAND JAMON Y QUESO.JPG',
+};
+
+const BEBIDA_IMAGES = {
+    'AGUA BRISA CON GAS 600ML': '/images/Bebidas/AGUA BRISA CON GAS 600ML.webp',
+    'AGUA BRISA SABORIZADA 280ML': '/images/Bebidas/AGUA BRISA SABORIZADA 280ML.webp',
+    'AGUA BRISA SIN GAS 600ML': '/images/Bebidas/AGUA BRISA SIN GAS 600ML.webp',
+    'AGUA SABORIZADA 600ML': '/images/Bebidas/AGUA SABORIZADA 600ML.webp',
+    'COCA COLA 500ML': '/images/Bebidas/COCACOLA 500ML.webp',
+    'COCACOLA 500ML': '/images/Bebidas/COCACOLA 500ML.webp',
+    'COCACOLA 1.5LT': '/images/Bebidas/COCACOLA 1.5LT.webp',
+    'COCACOLA 1.5L': '/images/Bebidas/COCACOLA 1.5LT.webp',
+    'COCACOLA 250ML': '/images/Bebidas/COCACOLA 250ML.webp',
+    'COCACOLA 400ML': '/images/Bebidas/COCACOLA 400ML.webp',
+    'COCACOLA ZERO 400ML': '/images/Bebidas/COCACOLA ZERO 400ML.webp',
+    'CORONITA': '/images/Bebidas/CORONITA.webp',
+    'DEL VALLE 1,5L CITRICO': '/images/Bebidas/DEL VALLE 1,5L CITRICO.webp',
+    'DEL VALLE 250ML': '/images/Bebidas/DEL VALLE 250ML.webp',
+    'DEL VALLE CAJA 188ML': '/images/Bebidas/DEL VALLE CAJA 188ML.webp',
+    'DEL VALLE CAJA 946ML': '/images/Bebidas/DEL VALLE CAJA 946ML.webp',
+    'DEL VALLE NARANJA 400ML': '/images/Bebidas/DEL VALLE NARANJA 400ML.webp',
+    'PREMIO 400ML': '/images/Bebidas/PREMIO 400ML.webp',
+    'QUATRO 1.5 L': '/images/Bebidas/QUATRO 1.5 L.webp',
+    'QUATRO 400 ML': '/images/Bebidas/QUATRO 400 ML.webp',
+    'SPRITE 400 ML': '/images/Bebidas/SPRITE 400 ML.webp',
+    'FUZE TEA 400 ML': '/images/Bebidas/fuze tea 400 ML.webp',
+    // Alias para variaciones menores de nombre en Loggro
+    'AGUA SABORIZADA': '/images/Bebidas/AGUA BRISA SABORIZADA 280ML.webp',
+    'AGUA BRISA': '/images/Bebidas/AGUA BRISA SIN GAS 600ML.webp',
+    'DEL VALLE': '/images/Bebidas/DEL VALLE CAJA 188ML.webp',
+    'COCA COLA': '/images/Bebidas/COCACOLA 500ML.webp',
+    'SPRITE': '/images/Bebidas/SPRITE 400 ML.webp',
+    'QUATRO': '/images/Bebidas/QUATRO 400 ML.webp',
+    'FUZE TEA': '/images/Bebidas/fuze tea 400 ML.webp',
+    'PREMIO': '/images/Bebidas/PREMIO 400ML.webp',
 };
 
 const getProductImage = (product) => {
     if (!product?.name) return null;
     const key = product.name.toUpperCase().trim();
-    return PRODUCT_IMAGES[key] ? `/images/products/${PRODUCT_IMAGES[key]}` : null;
+
+    // 1. Sandwiches
+    if (PRODUCT_IMAGES[key]) return `/images/products/${PRODUCT_IMAGES[key]}`;
+
+    // 2. Bebidas — coincidencia exacta
+    if (BEBIDA_IMAGES[key]) return BEBIDA_IMAGES[key];
+
+    // 3. Bebidas — coincidencia parcial (tolerante a variaciones de nombre)
+    const match = Object.keys(BEBIDA_IMAGES).find(k => key.includes(k) || k.includes(key));
+    return match ? BEBIDA_IMAGES[match] : null;
+};
+
+// Quita el prefijo "SAND " para mostrar nombres limpios en el carrito
+const getDisplayName = (name) => {
+    if (!name) return name;
+    return name.replace(/^SAND\s+/i, '').trim();
 };
 
 // IDs de bebidas locales (deben coincidir con UpsellDrinksModal)
@@ -30,7 +81,7 @@ const DRINK_IDS = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'];
 
 export default function CartDrawer({ isOpen, onClose }) {
     const router = useRouter();
-    const { items, totalItems, totalPrice, updateQuantity, removeItem, location } = useCart();
+    const { items, totalItems, totalPrice, updateQuantity, removeItem, location, orderType } = useCart();
 
     const [showUpsell, setShowUpsell] = useState(false);
 
@@ -97,7 +148,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                                 </svg>
-                                {location.name} &middot; Recoger
+                                {location.name} &middot; {orderType === 'delivery' ? 'Domicilio' : 'Recoger'}
                             </p>
                         )}
                     </div>
@@ -156,7 +207,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                                     </div>
 
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-display font-bold text-sm text-white truncate">{product.name}</p>
+                                        <p className="font-display font-bold text-sm text-white truncate">{getDisplayName(product.name)}</p>
                                         <p className="text-paninos-yellow font-bold text-sm mt-0.5">
                                             ${(parseFloat(product.price) * quantity).toLocaleString('es-CO')}
                                         </p>
@@ -208,7 +259,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                             </span>
                         </div>
 
-                        {location && (
+                        {location && orderType !== 'delivery' && (
                             <div className="bg-paninos-yellow/10 border border-paninos-yellow/20 rounded-xl px-4 py-3 flex items-center gap-3">
                                 <svg className="w-4 h-4 text-paninos-yellow flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />

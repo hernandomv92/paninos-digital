@@ -432,15 +432,15 @@ function normalize(str) {
 export function checkCoverage(neighborhood) {
     const q = normalize(neighborhood);
 
-    if (COBERTURA_LIBERTADORES.has(q)) return { covered: true, sede_slug: 'libertadores' };
-    if (COBERTURA_CALDAS.has(q)) return { covered: true, sede_slug: 'caldas' };
+    if (COBERTURA_LIBERTADORES.has(q)) return { covered: true, sede_slug: 'oeste' };
+    if (COBERTURA_CALDAS.has(q)) return { covered: true, sede_slug: 'sur' };
 
     // Búsqueda parcial como fallback
     for (const n of COBERTURA_LIBERTADORES) {
-        if (n.includes(q) || q.includes(n)) return { covered: true, sede_slug: 'libertadores' };
+        if (n.includes(q) || q.includes(n)) return { covered: true, sede_slug: 'oeste' };
     }
     for (const n of COBERTURA_CALDAS) {
-        if (n.includes(q) || q.includes(n)) return { covered: true, sede_slug: 'caldas' };
+        if (n.includes(q) || q.includes(n)) return { covered: true, sede_slug: 'sur' };
     }
 
     return { covered: false };
@@ -476,8 +476,8 @@ export function getNeighborhoodSuggestions(query, limit = 8) {
             const nName = normalize(name);
             let covered = false;
             let sede = null;
-            if (COBERTURA_LIBERTADORES.has(nName)) { covered = true; sede = 'libertadores'; }
-            else if (COBERTURA_CALDAS.has(nName)) { covered = true; sede = 'caldas'; }
+            if (COBERTURA_LIBERTADORES.has(nName)) { covered = true; sede = 'oeste'; }
+            else if (COBERTURA_CALDAS.has(nName)) { covered = true; sede = 'sur'; }
             return { name, covered, sede };
         });
 

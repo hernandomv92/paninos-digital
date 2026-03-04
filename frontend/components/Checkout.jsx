@@ -18,12 +18,58 @@ const PRODUCT_IMAGES = {
     'SAND SUPREMO CARNE': 'SAND SUPREMO CARNE.jpg',
     'SAND SUPREMO POLLO': 'SAND SUPREMO POLLO.JPG',
     'SAND VEGETARIANO': 'SAND VEGETARIANO.jpg',
+    'SAND CORDERO': 'SAND CORDERO.JPG',
+    'SAND JAMON Y QUESO': 'SAND JAMON Y QUESO.JPG',
+};
+
+const BEBIDA_IMAGES = {
+    'AGUA BRISA CON GAS 600ML': '/images/Bebidas/AGUA BRISA CON GAS 600ML.webp',
+    'AGUA BRISA SABORIZADA 280ML': '/images/Bebidas/AGUA BRISA SABORIZADA 280ML.webp',
+    'AGUA BRISA SIN GAS 600ML': '/images/Bebidas/AGUA BRISA SIN GAS 600ML.webp',
+    'AGUA SABORIZADA 600ML': '/images/Bebidas/AGUA SABORIZADA 600ML.webp',
+    'COCA COLA 500ML': '/images/Bebidas/COCACOLA 500ML.webp',
+    'COCACOLA 500ML': '/images/Bebidas/COCACOLA 500ML.webp',
+    'COCACOLA 1.5LT': '/images/Bebidas/COCACOLA 1.5LT.webp',
+    'COCACOLA 1.5L': '/images/Bebidas/COCACOLA 1.5LT.webp',
+    'COCACOLA 250ML': '/images/Bebidas/COCACOLA 250ML.webp',
+    'COCACOLA 400ML': '/images/Bebidas/COCACOLA 400ML.webp',
+    'COCACOLA ZERO 400ML': '/images/Bebidas/COCACOLA ZERO 400ML.webp',
+    'CORONITA': '/images/Bebidas/CORONITA.webp',
+    'DEL VALLE 1,5L CITRICO': '/images/Bebidas/DEL VALLE 1,5L CITRICO.webp',
+    'DEL VALLE 250ML': '/images/Bebidas/DEL VALLE 250ML.webp',
+    'DEL VALLE CAJA 188ML': '/images/Bebidas/DEL VALLE CAJA 188ML.webp',
+    'DEL VALLE CAJA 946ML': '/images/Bebidas/DEL VALLE CAJA 946ML.webp',
+    'DEL VALLE NARANJA 400ML': '/images/Bebidas/DEL VALLE NARANJA 400ML.webp',
+    'PREMIO 400ML': '/images/Bebidas/PREMIO 400ML.webp',
+    'QUATRO 1.5 L': '/images/Bebidas/QUATRO 1.5 L.webp',
+    'QUATRO 400 ML': '/images/Bebidas/QUATRO 400 ML.webp',
+    'SPRITE 400 ML': '/images/Bebidas/SPRITE 400 ML.webp',
+    'FUZE TEA 400 ML': '/images/Bebidas/fuze tea 400 ML.webp',
+    'AGUA SABORIZADA': '/images/Bebidas/AGUA BRISA SABORIZADA 280ML.webp',
+    'AGUA BRISA': '/images/Bebidas/AGUA BRISA SIN GAS 600ML.webp',
+    'DEL VALLE': '/images/Bebidas/DEL VALLE CAJA 188ML.webp',
+    'COCA COLA': '/images/Bebidas/COCACOLA 500ML.webp',
+    'SPRITE': '/images/Bebidas/SPRITE 400 ML.webp',
+    'QUATRO': '/images/Bebidas/QUATRO 400 ML.webp',
+    'FUZE TEA': '/images/Bebidas/fuze tea 400 ML.webp',
+    'PREMIO': '/images/Bebidas/PREMIO 400ML.webp',
 };
 
 const getProductImage = (product) => {
     if (!product?.name) return null;
     const key = product.name.toUpperCase().trim();
-    return PRODUCT_IMAGES[key] ? `/images/products/${PRODUCT_IMAGES[key]}` : null;
+
+    if (PRODUCT_IMAGES[key]) return `/images/products/${PRODUCT_IMAGES[key]}`;
+    if (BEBIDA_IMAGES[key]) return BEBIDA_IMAGES[key];
+
+    const match = Object.keys(BEBIDA_IMAGES).find(k => key.includes(k) || k.includes(key));
+    return match ? BEBIDA_IMAGES[match] : null;
+};
+
+// Quita el prefijo "SAND " para mostrar nombres limpios
+const getDisplayName = (name) => {
+    if (!name) return name;
+    return name.replace(/^SAND\s+/i, '').trim();
 };
 
 // ── Métodos de pago por tipo de orden ─────────────────────────────────────────
@@ -80,14 +126,23 @@ const PAYMENT_METHODS_DELIVERY = [
 // ── Costo de domicilio ────────────────────────────────────────────────────────
 const DELIVERY_FEE = 4900;
 
-// ── Helper: icono de repartidor SVG ───────────────────────────────────────────
-function DeliveryIcon({ className = 'w-5 h-5' }) {
+// ── Helper: ícono de moto (imagen subida por el usuario) ──────────────────────
+function MotoIcon({ className = 'w-5 h-5' }) {
+    return (
+        <img
+            src="/images/fast-delivery.webp"
+            alt="Domicilio"
+            className={className}
+            style={{ objectFit: 'contain' }}
+        />
+    );
+}
+
+function StoreIcon({ className = 'w-5 h-5' }) {
     return (
         <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" />
-            <rect x="9" y="11" width="14" height="10" rx="2" />
-            <circle cx="12" cy="21" r="1" />
-            <circle cx="20" cy="21" r="1" />
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            <path d="M9 22V12h6v10" />
         </svg>
     );
 }
@@ -246,11 +301,17 @@ export default function Checkout() {
 
                     {/* Badge de tipo de pedido */}
                     <div className="ml-auto">
-                        <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${isDelivery
+                        <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full ${isDelivery
                             ? 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/25'
                             : 'bg-paninos-yellow/10 text-paninos-yellow border border-paninos-yellow/20'
                             }`}>
-                            {isDelivery ? '🛵 Domicilio' : '🏪 Recogida'}
+                            <span className="w-3.5 h-3.5 flex items-center justify-center">
+                                {isDelivery
+                                    ? <MotoIcon className="w-3.5 h-3.5" />
+                                    : <StoreIcon className="w-3.5 h-3.5" />
+                                }
+                            </span>
+                            {isDelivery ? 'Domicilio' : 'Recogida'}
                         </span>
                     </div>
                 </div>
@@ -280,7 +341,7 @@ export default function Checkout() {
                                             }
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="font-display font-bold text-sm text-white truncate">{product.name}</p>
+                                            <p className="font-display font-bold text-sm text-white truncate">{getDisplayName(product.name)}</p>
                                             <p className="text-xs text-gray-500">x{quantity}</p>
                                         </div>
                                         <p className="font-display font-bold text-paninos-yellow text-sm flex-shrink-0">
@@ -327,7 +388,7 @@ export default function Checkout() {
                         <div className="bg-paninos-yellow/10 border border-paninos-yellow/20 rounded-2xl p-4 flex items-center gap-4">
                             <div className="w-10 h-10 rounded-xl bg-paninos-yellow/20 flex items-center justify-center flex-shrink-0">
                                 {isDelivery
-                                    ? <DeliveryIcon className="w-5 h-5 text-paninos-yellow" />
+                                    ? <MotoIcon className="w-5 h-5 text-paninos-yellow" />
                                     : (
                                         <svg className="w-5 h-5 text-paninos-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -355,7 +416,7 @@ export default function Checkout() {
                     {isDelivery && (
                         <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 overflow-hidden">
                             <div className="px-5 py-4 border-b border-white/5 flex items-center gap-2">
-                                <DeliveryIcon className="w-4 h-4 text-paninos-yellow" />
+                                <MotoIcon className="w-4 h-4 text-paninos-yellow" />
                                 <div>
                                     <h2 className="font-display font-bold text-white text-base">Dirección de Entrega</h2>
                                     <p className="text-xs text-gray-500 mt-0.5">¿A dónde te llevamos el pedido?</p>
