@@ -363,7 +363,7 @@ export default function UpsellDrinksModal({ isOpen, onClose, onContinue }) {
                                 Antes de finalizar...
                             </p>
                             <h2 className="font-display font-bold text-xl text-white leading-snug">
-                                ¿Le agregamos algo más?
+                                ¿Quieres llevar algo más?
                             </h2>
                             <p className="text-xs text-gray-500 mt-1">
                                 Acompaña tu pedido con una bebida o snack
